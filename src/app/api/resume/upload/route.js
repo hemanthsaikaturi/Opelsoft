@@ -28,9 +28,12 @@ export async function POST(request) {
 
     let pdfText = '';
     try {
-      const pdfParse = require('pdf-parse');
-      const pdfData = await pdfParse(buffer);
-      pdfText = pdfData.text;
+      // pdf-parse v2 exports a PDFParse class (not a callable). Requires the
+      // @napi-rs/canvas polyfill for DOMMatrix/ImageData/Path2D in Node.
+      const { PDFParse } = require('pdf-parse');
+      const parser = new PDFParse({ data: new Uint8Array(arrayBuffer) });
+      const pdfData = await parser.getText();
+      pdfText = pdfData.text || '';
     } catch (e) {
       console.warn('Failed to parse PDF text locally:', e);
     }
