@@ -1,5 +1,6 @@
 import { getAuthUser } from '@/lib/auth';
 import { NextResponse } from 'next/server';
+import pdfParse from 'pdf-parse';
 
 export async function POST(request) {
   try {
@@ -22,8 +23,15 @@ export async function POST(request) {
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const base64Data = buffer.toString('base64');
     const mimeType = file.type || 'application/pdf';
+
+    let pdfText = '';
+    try {
+      const pdfData = await pdfParse(buffer);
+      pdfText = pdfData.text;
+    } catch (e) {
+      console.warn('Failed to parse PDF text locally:', e);
+    }
 
     const parsePrompt = `Analyze this resume and extract the candidate's professional details. Return ONLY a valid JSON object matching the following structure (do NOT wrap it in markdown code blocks, do NOT write explanations, return only the raw JSON block itself):
     {
@@ -31,12 +39,15 @@ export async function POST(request) {
       "skills": [{ "name": "string (e.g. React)", "percentage": 85 }],
       "education": [{ "title": "string", "institute": "string", "from": "string", "to": "string", "description": "string" }],
       "experience": [{ "title": "string", "company": "string", "from": "string", "to": "string", "description": "string" }]
-    }`;
+    }
+    
+    RESUME TEXT:
+    ${pdfText}`;
 
-    // 1. Try Gemini Multimodal Direct PDF Parsing first
+    // 1. Try Gemini API first (Text Only)
     if (process.env.GEMINI_API_KEY) {
       try {
-        console.log('Sending CV directly to Gemini 2.0 Flash for parsing...');
+        console.log('Sending extracted CV text to Gemini 2.0 Flash for parsing...');
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
           {
@@ -44,17 +55,7 @@ export async function POST(request) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contents: [{
-                parts: [
-                  {
-                    inlineData: {
-                      mimeType: mimeType,
-                      data: base64Data
-                    }
-                  },
-                  {
-                    text: parsePrompt
-                  }
-                ]
+                parts: [{ text: parsePrompt }]
               }],
               generationConfig: {
                 temperature: 0.1,
@@ -128,7 +129,7 @@ export async function POST(request) {
     // 2.5 Try OpenAI (ChatGPT) API third
     if (process.env.OPENAI_API_KEY) {
       try {
-        console.log('Sending CV to OpenAI (ChatGPT) for parsing...');
+        console.log('Sending extracted CV text to OpenAI (ChatGPT) for parsing...');
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -144,15 +145,7 @@ export async function POST(request) {
               },
               {
                 role: 'user',
-                content: [
-                  { type: 'text', text: parsePrompt },
-                  {
-                    type: 'image_url',
-                    image_url: {
-                      url: `data:${mimeType};base64,${base64Data}`
-                    }
-                  }
-                ]
+                content: parsePrompt
               }
             ],
             response_format: { type: 'json_object' }
