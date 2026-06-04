@@ -4,6 +4,7 @@ import Reveal from '@/components/ui/Reveal';
 import CountUp from '@/components/ui/CountUp';
 import RotatingWord from '@/components/ui/RotatingWord';
 import SaveButton from '@/components/ui/SaveButton';
+import GeoDecor from '@/components/ui/GeoDecor';
 
 // Cache the homepage and revalidate periodically instead of querying the
 // remote DB on every navigation (much faster nav; counts refresh every 30s).
@@ -69,8 +70,9 @@ export default async function Home() {
     <div className="home-page" style={{ background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
 
       {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="op-mesh" style={{ borderBottom: '1px solid var(--border-color)', padding: '116px 0 104px', overflow: 'hidden' }}>
-        <div className="container">
+      <section className="op-mesh" style={{ position: 'relative', borderBottom: '1px solid var(--border-color)', padding: '116px 0 104px', overflow: 'hidden' }}>
+        <GeoDecor />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '56px', alignItems: 'center' }}>
             {/* Left */}
             <Reveal>
@@ -127,7 +129,7 @@ export default async function Home() {
           <div className="op-ticker">
             {[...TICKER, ...TICKER].map((r, i) => (
               <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
-                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--op-violet)' }} /> {r}
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--op-indigo)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.75 }}><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg> {r}
               </span>
             ))}
           </div>

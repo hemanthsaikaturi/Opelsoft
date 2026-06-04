@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 import CountUp from '@/components/ui/CountUp';
+import GeoDecor from '@/components/ui/GeoDecor';
 
 export const metadata = {
   title: 'About OpelSoft, Talent for AI, Robotics & Deep Tech', description: 'OpelSoft is a specialist talent and staffing platform connecting people with leaders in artificial intelligence, robotics, and emerging technology.',
@@ -31,8 +32,9 @@ export default function AboutUsPage() {
     <div style={{ background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
 
       {/* HERO */}
-      <section className="op-mesh" style={{ borderBottom: '1px solid var(--border-color)', padding: '76px 0 64px', overflow: 'hidden' }}>
-        <div className="container">
+      <section className="op-mesh" style={{ position: 'relative', borderBottom: '1px solid var(--border-color)', padding: '76px 0 64px', overflow: 'hidden' }}>
+        <GeoDecor />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '52px', alignItems: 'center' }}>
             <Reveal>
               <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.22em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '18px' }}>About OpelSoft</div>
