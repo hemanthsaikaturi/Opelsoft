@@ -4,12 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function CandidateAiAgent() {
   const [config, setConfig] = useState({
-    status: 'inactive',
-    preferred_roles: [],
-    target_locations: [],
-    target_salary: '35000',
-    min_match_score: 70,
-    auto_discover: 1
+    status: 'inactive', preferred_roles: [], target_locations: [], target_salary: '35000', min_match_score: 70, auto_discover: 1
   });
   
   const [sources, setSources] = useState([]);
@@ -43,9 +38,7 @@ export default function CandidateAiAgent() {
     setLoading(true);
     try {
       const [configRes, sourcesRes, matchesRes] = await Promise.all([
-        fetch('/api/ai-agent/config').then(r => r.json()),
-        fetch('/api/ai-agent/sources').then(r => r.json()),
-        fetch('/api/ai-agent/matches').then(r => r.json())
+        fetch('/api/ai-agent/config').then(r => r.json()), fetch('/api/ai-agent/sources').then(r => r.json()), fetch('/api/ai-agent/matches').then(r => r.json())
       ]);
 
       if (configRes.success) setConfig(configRes.config);
@@ -70,9 +63,7 @@ export default function CandidateAiAgent() {
     setSavingConfig(true);
     try {
       const res = await fetch('/api/ai-agent/config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(config)
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config)
       });
       const data = await res.json();
       if (data.success) {
@@ -93,9 +84,7 @@ export default function CandidateAiAgent() {
     setAddingSource(true);
     try {
       const res = await fetch('/api/ai-agent/sources', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: newUrl })
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: newUrl })
       });
       const data = await res.json();
       if (data.success) {
@@ -165,8 +154,7 @@ export default function CandidateAiAgent() {
     if (!roleInput.trim()) return;
     if (!config.preferred_roles.includes(roleInput.trim())) {
       setConfig({
-        ...config,
-        preferred_roles: [...config.preferred_roles, roleInput.trim()]
+        ...config, preferred_roles: [...config.preferred_roles, roleInput.trim()]
       });
     }
     setRoleInput('');
@@ -174,8 +162,7 @@ export default function CandidateAiAgent() {
 
   const removeRoleTag = (role) => {
     setConfig({
-      ...config,
-      preferred_roles: config.preferred_roles.filter(r => r !== role)
+      ...config, preferred_roles: config.preferred_roles.filter(r => r !== role)
     });
   };
 
@@ -183,8 +170,7 @@ export default function CandidateAiAgent() {
     if (!locInput.trim()) return;
     if (!config.target_locations.includes(locInput.trim())) {
       setConfig({
-        ...config,
-        target_locations: [...config.target_locations, locInput.trim()]
+        ...config, target_locations: [...config.target_locations, locInput.trim()]
       });
     }
     setLocInput('');
@@ -192,8 +178,7 @@ export default function CandidateAiAgent() {
 
   const removeLocTag = (loc) => {
     setConfig({
-      ...config,
-      target_locations: config.target_locations.filter(l => l !== loc)
+      ...config, target_locations: config.target_locations.filter(l => l !== loc)
     });
   };
 
@@ -260,8 +245,7 @@ export default function CandidateAiAgent() {
                     <div style={{ marginBottom: '12px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                         <span style={{
-                          fontWeight: 800, fontSize: '13px', padding: '2px 10px', borderRadius: '6px', color: '#fff',
-                          background: ['A', 'B'].includes(match.evaluation.grade) ? '#10b981' : match.evaluation.grade === 'C' ? '#f59e0b' : '#ef4444'
+                          fontWeight: 800, fontSize: '13px', padding: '2px 10px', borderRadius: '6px', color: '#fff', background: ['A', 'B'].includes(match.evaluation.grade) ? '#10b981' : match.evaluation.grade === 'C' ? '#f59e0b' : '#ef4444'
                         }}>Grade {match.evaluation.grade}</span>
                         {match.evaluation.legitimacy && match.evaluation.legitimacy.is_legit === false && (
                           <span style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', border: '1px solid #ef4444', borderRadius: '6px', padding: '2px 8px' }}>

@@ -7,8 +7,7 @@ export async function POST(request) {
     const session = getAuthUser(request);
     if (!session || session.role !== 'candidate') {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized. Candidate login required.' },
-        { status: 401 }
+        { success: false, message: 'Unauthorized. Candidate login required.' }, { status: 401 }
       );
     }
     const userId = session.userId;

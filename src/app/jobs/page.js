@@ -6,8 +6,7 @@ import SaveButton from '@/components/ui/SaveButton';
 async function getFilteredJobs(searchParams) {
   const { keyword, location, job_type, industry, city } = searchParams;
   let query = `
-    SELECT j.id, j.title, j.job_type, j.salary_package, j.address, j.city, j.country, j.industry, j.experience, j.created_at,
-           e.company_name, e.logo_url
+    SELECT j.id, j.title, j.job_type, j.salary_package, j.address, j.city, j.country, j.industry, j.experience, j.created_at, e.company_name, e.logo_url
     FROM new_jobs j
     LEFT JOIN new_employer_profiles e ON j.employer_id = e.user_id
     WHERE j.status = 'active'
@@ -30,11 +29,7 @@ async function getFilteredJobs(searchParams) {
     console.error('Failed to query filtered jobs, using fallback:', err);
     return {
       jobs: [
-        { id: 1, title: 'Senior AI/ML Engineer', job_type: 'Full-time', salary_package: '90000-140000', city: 'London', country: 'United Kingdom', company_name: 'DeepMind', industry: 'Artificial Intelligence', experience: 'Senior' },
-        { id: 2, title: 'Robotics Engineer', job_type: 'Full-time', salary_package: '75000-110000', city: 'Cambridge', country: 'United Kingdom', company_name: 'Wayve', industry: 'Robotics', experience: 'Mid' },
-      ],
-      filterOptions: { jobTypes: ['Full-time', 'Part-time', 'Contract', 'Internship'], industries: ['Artificial Intelligence', 'Robotics', 'Machine Learning', 'Automation'], locations: ['London', 'Cambridge', 'Manchester'] },
-    };
+        { id: 1, title: 'Senior AI/ML Engineer', job_type: 'Full-time', salary_package: '90000-140000', city: 'London', country: 'United Kingdom', company_name: 'DeepMind', industry: 'Artificial Intelligence', experience: 'Senior' }, { id: 2, title: 'Robotics Engineer', job_type: 'Full-time', salary_package: '75000-110000', city: 'Cambridge', country: 'United Kingdom', company_name: 'Wayve', industry: 'Robotics', experience: 'Mid' }, ], filterOptions: { jobTypes: ['Full-time', 'Part-time', 'Contract', 'Internship'], industries: ['Artificial Intelligence', 'Robotics', 'Machine Learning', 'Automation'], locations: ['London', 'Cambridge', 'Manchester'] }, };
   }
 }
 

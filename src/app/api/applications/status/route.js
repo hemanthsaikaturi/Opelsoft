@@ -10,8 +10,7 @@ export async function POST(request) {
     const session = getAuthUser(request);
     if (!session || session.role !== 'employer') {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized. Employer login required.' },
-        { status: 401 }
+        { success: false, message: 'Unauthorized. Employer login required.' }, { status: 401 }
       );
     }
 
@@ -30,20 +29,17 @@ export async function POST(request) {
       `SELECT ja.id
        FROM new_job_applications ja
        JOIN new_jobs j ON ja.job_id = j.id
-       WHERE ja.id = ? AND j.employer_id = ?`,
-      [applicationId, session.userId]
+       WHERE ja.id = ? AND j.employer_id = ?`, [applicationId, session.userId]
     );
 
     if (!owned || owned.length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Application not found or you do not have permission to modify it.' },
-        { status: 404 }
+        { success: false, message: 'Application not found or you do not have permission to modify it.' }, { status: 404 }
       );
     }
 
     await pool.query(
-      'UPDATE new_job_applications SET status = ? WHERE id = ?',
-      [status, applicationId]
+      'UPDATE new_job_applications SET status = ? WHERE id = ?', [status, applicationId]
     );
 
     return NextResponse.json({ success: true, message: 'Candidate application status updated successfully!' });

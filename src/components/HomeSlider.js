@@ -5,72 +5,25 @@ import Link from 'next/link';
 
 const SLIDES_DATA = [
   {
-    tag: "AUTONOMOUS RECRUITING",
-    title: "Automate the Hunt.",
-    highlight: "Align the Matches.",
-    description: "Opelsoft deploys custom crawler telemetry to index company career pages and runs cognitive LLM reasoning to score opportunities against your resume.",
-    ctaText: "Start Free Trial",
-    ctaLink: "/register",
-    theme: "blue"
-  },
-  {
-    tag: "TELEMETRY SCRAPING",
-    title: "Direct ATS Ingestion.",
-    highlight: "Real-time Telemetry.",
-    description: "Ingest live job postings directly from Greenhouse, Lever, and private corporate portals in real-time. No delayed aggregators, no stale listings.",
-    ctaText: "Explore Crawl Targets",
-    ctaLink: "/jobs",
-    theme: "emerald"
-  },
-  {
-    tag: "COGNITIVE SCORING",
-    title: "LLM Relevance.",
-    highlight: "Expose Skill Gaps.",
-    description: "Compare candidate blueprints against job specifications automatically using Claude 3.5 & Gemini. Instantly identify qualification risks and missing skills.",
-    ctaText: "Configure Your Agent",
-    ctaLink: "/dashboard/candidate?tab=ai-agent",
-    theme: "amber"
+    tag: "AUTONOMOUS RECRUITING", title: "Automate the Hunt.", highlight: "Align the Matches.", description: "Opelsoft deploys custom crawler telemetry to index company career pages and runs cognitive LLM reasoning to score opportunities against your resume.", ctaText: "Start Free Trial", ctaLink: "/register", theme: "blue"
+  }, {
+    tag: "TELEMETRY SCRAPING", title: "Direct ATS Ingestion.", highlight: "Real-time Telemetry.", description: "Ingest live job postings directly from Greenhouse, Lever, and private corporate portals in real-time. No delayed aggregators, no stale listings.", ctaText: "Explore Crawl Targets", ctaLink: "/jobs", theme: "emerald"
+  }, {
+    tag: "COGNITIVE SCORING", title: "LLM Relevance.", highlight: "Expose Skill Gaps.", description: "Compare candidate blueprints against job specifications automatically using Claude 3.5 & Gemini. Instantly identify qualification risks and missing skills.", ctaText: "Configure Your Agent", ctaLink: "/dashboard/candidate?tab=ai-agent", theme: "amber"
   }
 ];
 
 const MOCK_LOGS = [
-  { type: 'crawl', label: 'CRAWLER', text: 'GREENHOUSE: Indexing Google AI career page...' },
-  { type: 'crawl', label: 'ATS', text: 'LEVER: Scraped 4 new positions from Vercel' },
-  { type: 'score', label: 'COGNITIVE', text: 'CLAUDE-3.5: Scoring "Senior Full-Stack Engineer" against resume blueprint' },
-  { type: 'score', label: 'MATCH', text: 'MATCH ENGINE: Score 94% match. Matches: Next.js, React, Node.js' },
-  { type: 'alert', label: 'ALERT', text: 'NOTIFICATION: Slack digest dispatched to 12 candidates' },
-  { type: 'crawl', label: 'CRAWLER', text: 'WORKDAY: Indexing Netflix career portal...' },
-  { type: 'crawl', label: 'ATS', text: 'GREENHOUSE: Ingested 2 new roles from Stripe' },
-  { type: 'score', label: 'COGNITIVE', text: 'GEMINI-1.5: Analyzing skill gap for "ML Scientist"' },
-  { type: 'alert', label: 'GAP', text: 'MATCH ENGINE: Found gap: PyTorch (severity: medium)' },
-  { type: 'crawl', label: 'ATS', text: 'LEVER: Crawling Figma target endpoints...' },
-  { type: 'score', label: 'TELEMETRY', text: 'TELEMETRY: Re-indexed Greenhouse targets for 18 active companies' }
+  { type: 'crawl', label: 'CRAWLER', text: 'GREENHOUSE: Indexing Google AI career page...' }, { type: 'crawl', label: 'ATS', text: 'LEVER: Scraped 4 new positions from Vercel' }, { type: 'score', label: 'COGNITIVE', text: 'CLAUDE-3.5: Scoring "Senior Full-Stack Engineer" against resume blueprint' }, { type: 'score', label: 'MATCH', text: 'MATCH ENGINE: Score 94% match. Matches: Next.js, React, Node.js' }, { type: 'alert', label: 'ALERT', text: 'NOTIFICATION: Slack digest dispatched to 12 candidates' }, { type: 'crawl', label: 'CRAWLER', text: 'WORKDAY: Indexing Netflix career portal...' }, { type: 'crawl', label: 'ATS', text: 'GREENHOUSE: Ingested 2 new roles from Stripe' }, { type: 'score', label: 'COGNITIVE', text: 'GEMINI-1.5: Analyzing skill gap for "ML Scientist"' }, { type: 'alert', label: 'GAP', text: 'MATCH ENGINE: Found gap: PyTorch (severity: medium)' }, { type: 'crawl', label: 'ATS', text: 'LEVER: Crawling Figma target endpoints...' }, { type: 'score', label: 'TELEMETRY', text: 'TELEMETRY: Re-indexed Greenhouse targets for 18 active companies' }
 ];
 
 const MOCK_PIPELINES = [
   {
-    candidate: 'Hemanth K. (AI Engineer)',
-    company: 'DeepMind',
-    role: 'Senior ML Engineer',
-    score: 96,
-    status: 'Verified Match',
-    gaps: ['PyTorch', 'Distributed Training']
-  },
-  {
-    candidate: 'Sarah L. (Frontend Architect)',
-    company: 'Vercel',
-    role: 'Lead UI Engineer',
-    score: 92,
-    status: 'Direct ATS Ingest',
-    gaps: ['WebGL']
-  },
-  {
-    candidate: 'Alex M. (Data Platform Lead)',
-    company: 'Stripe',
-    role: 'Staff Analytics Engineer',
-    score: 88,
-    status: 'Scored & Ranked',
-    gaps: ['Rust', 'Snowflake']
+    candidate: 'Hemanth K. (AI Engineer)', company: 'DeepMind', role: 'Senior ML Engineer', score: 96, status: 'Verified Match', gaps: ['PyTorch', 'Distributed Training']
+  }, {
+    candidate: 'Sarah L. (Frontend Architect)', company: 'Vercel', role: 'Lead UI Engineer', score: 92, status: 'Direct ATS Ingest', gaps: ['WebGL']
+  }, {
+    candidate: 'Alex M. (Data Platform Lead)', company: 'Stripe', role: 'Staff Analytics Engineer', score: 88, status: 'Scored & Ranked', gaps: ['Rust', 'Snowflake']
   }
 ];
 
@@ -154,14 +107,7 @@ export default function HomeSlider({ stats }) {
                   key={index}
                   onClick={() => setActiveSlide(index)}
                   style={{
-                    width: index === activeSlide ? '32px' : '8px',
-                    height: '8px',
-                    borderRadius: '4px',
-                    border: 'none',
-                    background: index === activeSlide ? 'var(--accent-color)' : 'rgba(255, 255, 255, 0.2)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
+                    width: index === activeSlide ? '32px' : '8px', height: '8px', borderRadius: '4px', border: 'none', background: index === activeSlide ? 'var(--accent-color)' : 'rgba(255, 255, 255, 0.2)', cursor: 'pointer', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', }}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
@@ -170,14 +116,7 @@ export default function HomeSlider({ stats }) {
             {/* Tag / Category Badge */}
             <div
               style={{
-                fontFamily: 'var(--font-mono-stack)',
-                fontSize: '0.8rem',
-                fontWeight: '700',
-                color: activeSlide === 0 ? '#1e50ff' : activeSlide === 1 ? '#10b981' : '#f59e0b',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                transition: 'color 0.4s ease',
-              }}
+                fontFamily: 'var(--font-mono-stack)', fontSize: '0.8rem', fontWeight: '700', color: activeSlide === 0 ? '#1e50ff' : activeSlide === 1 ? '#10b981' : '#f59e0b', letterSpacing: '0.2em', textTransform: 'uppercase', transition: 'color 0.4s ease', }}
             >
               {SLIDES_DATA[activeSlide].tag}
             </div>
@@ -186,24 +125,14 @@ export default function HomeSlider({ stats }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <h1
                 style={{
-                  fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
-                  fontWeight: '900',
-                  lineHeight: '1.05',
-                  letterSpacing: '-0.04em',
-                  color: '#ffffff',
-                }}
+                  fontSize: 'clamp(2.5rem, 5vw, 4.2rem)', fontWeight: '900', lineHeight: '1.05', letterSpacing: '-0.04em', color: '#ffffff', }}
               >
                 {SLIDES_DATA[activeSlide].title}
               </h1>
               <h1
                 className="font-serif-italic"
                 style={{
-                  fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
-                  fontWeight: '400',
-                  lineHeight: '1.05',
-                  letterSpacing: '-0.02em',
-                  color: 'rgba(255, 255, 255, 0.65)',
-                }}
+                  fontSize: 'clamp(2.5rem, 5vw, 4.2rem)', fontWeight: '400', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'rgba(255, 255, 255, 0.65)', }}
               >
                 {SLIDES_DATA[activeSlide].highlight}
               </h1>
@@ -212,11 +141,7 @@ export default function HomeSlider({ stats }) {
             {/* Description Text */}
             <p
               style={{
-                fontSize: 'clamp(1.1rem, 2vw, 1.2rem)',
-                color: 'rgba(255, 255, 255, 0.7)',
-                lineHeight: '1.6',
-                fontWeight: '400',
-              }}
+                fontSize: 'clamp(1.1rem, 2vw, 1.2rem)', color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.6', fontWeight: '400', }}
             >
               {SLIDES_DATA[activeSlide].description}
             </p>
@@ -227,15 +152,7 @@ export default function HomeSlider({ stats }) {
                 href={SLIDES_DATA[activeSlide].ctaLink}
                 className="fs-btn-pill"
                 style={{
-                  padding: '14px 28px',
-                  borderRadius: '30px',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  background: '#ffffff',
-                  color: '#09090b',
-                  borderColor: '#ffffff',
-                  boxShadow: '0 10px 25px rgba(255, 255, 255, 0.08)',
-                }}
+                  padding: '14px 28px', borderRadius: '30px', fontSize: '1rem', fontWeight: '600', background: '#ffffff', color: '#09090b', borderColor: '#ffffff', boxShadow: '0 10px 25px rgba(255, 255, 255, 0.08)', }}
               >
                 {SLIDES_DATA[activeSlide].ctaText}
               </Link>
@@ -243,15 +160,7 @@ export default function HomeSlider({ stats }) {
                 href="/about-us"
                 className="fs-btn-ghost"
                 style={{
-                  padding: '14px 28px',
-                  borderRadius: '30px',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  background: 'transparent',
-                  color: '#ffffff',
-                  boxShadow: 'none',
-                }}
+                  padding: '14px 28px', borderRadius: '30px', fontSize: '1rem', fontWeight: '600', border: '1px solid rgba(255, 255, 255, 0.15)', background: 'transparent', color: '#ffffff', boxShadow: 'none', }}
               >
                 How It Works
               </Link>
@@ -265,14 +174,7 @@ export default function HomeSlider({ stats }) {
             {/* Search Box Component */}
             <div
               style={{
-                background: 'rgba(255, 255, 255, 0.02)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '20px',
-                padding: '28px',
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
-              }}
+                background: 'rgba(255, 255, 255, 0.02)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '28px', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)', }}
             >
               <h3 style={{ fontSize: '1.3rem', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px', color: '#ffffff' }}>
                 Search Opportunities
@@ -294,15 +196,7 @@ export default function HomeSlider({ stats }) {
                       value={searchTitle}
                       onChange={(e) => setSearchTitle(e.target.value)}
                       style={{
-                        width: '100%',
-                        padding: '12px 14px 12px 36px',
-                        background: 'rgba(255, 255, 255, 0.04)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        color: '#ffffff',
-                        fontSize: '0.9rem',
-                        transition: 'border-color 0.2s',
-                      }}
+                        width: '100%', padding: '12px 14px 12px 36px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px', color: '#ffffff', fontSize: '0.9rem', transition: 'border-color 0.2s', }}
                     />
                     <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}>
                       🔍
@@ -321,15 +215,7 @@ export default function HomeSlider({ stats }) {
                       value={searchLocation}
                       onChange={(e) => setSearchLocation(e.target.value)}
                       style={{
-                        width: '100%',
-                        padding: '12px 14px 12px 36px',
-                        background: 'rgba(255, 255, 255, 0.04)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        color: '#ffffff',
-                        fontSize: '0.9rem',
-                        transition: 'border-color 0.2s',
-                      }}
+                        width: '100%', padding: '12px 14px 12px 36px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px', color: '#ffffff', fontSize: '0.9rem', transition: 'border-color 0.2s', }}
                     />
                     <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}>
                       📍
@@ -341,18 +227,7 @@ export default function HomeSlider({ stats }) {
                   type="submit"
                   className="fs-btn-pill"
                   style={{
-                    width: '100%',
-                    padding: '12px',
-                    borderRadius: '10px',
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    background: 'var(--accent-gradient)',
-                    color: '#ffffff',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 8px 20px rgba(30, 80, 255, 0.25)',
-                    marginTop: '4px',
-                  }}
+                    width: '100%', padding: '12px', borderRadius: '10px', fontSize: '0.95rem', fontWeight: '600', background: 'var(--accent-gradient)', color: '#ffffff', border: 'none', cursor: 'pointer', boxShadow: '0 8px 20px rgba(30, 80, 255, 0.25)', marginTop: '4px', }}
                 >
                   Query Positions
                 </button>
@@ -452,12 +327,7 @@ export default function HomeSlider({ stats }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
               <div
                 style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '16px',
-                  padding: '12px 8px',
-                  textAlign: 'center',
-                }}
+                  background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '16px', padding: '12px 8px', textAlign: 'center', }}
               >
                 <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.03em', fontFamily: 'var(--font-mono-stack)' }}>
                   {jobsCount}
@@ -469,12 +339,7 @@ export default function HomeSlider({ stats }) {
 
               <div
                 style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '16px',
-                  padding: '12px 8px',
-                  textAlign: 'center',
-                }}
+                  background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '16px', padding: '12px 8px', textAlign: 'center', }}
               >
                 <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.03em', fontFamily: 'var(--font-mono-stack)' }}>
                   {usersCount}
@@ -486,12 +351,7 @@ export default function HomeSlider({ stats }) {
 
               <div
                 style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '16px',
-                  padding: '12px 8px',
-                  textAlign: 'center',
-                }}
+                  background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '16px', padding: '12px 8px', textAlign: 'center', }}
               >
                 <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.03em', fontFamily: 'var(--font-mono-stack)' }}>
                   {companiesCount}

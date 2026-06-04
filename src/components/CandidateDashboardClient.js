@@ -38,8 +38,7 @@ export default function CandidateDashboardClient({ candidate, applications }) {
       formData.append('file', cvFile);
 
       const res = await fetch('/api/resume/upload', {
-        method: 'POST',
-        body: formData
+        method: 'POST', body: formData
       });
       const data = await res.json();
 
@@ -79,16 +78,8 @@ export default function CandidateDashboardClient({ candidate, applications }) {
 
     try {
       const res = await fetch('/api/dashboard/candidate/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone_number: phone,
-          minimum_salary: salary,
-          cover_letter: coverLetter,
-          cv_url: cvUrl,
-          skills: JSON.stringify(skills),
-          education: JSON.stringify(education),
-          experience: JSON.stringify(experience)
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+          phone_number: phone, minimum_salary: salary, cover_letter: coverLetter, cv_url: cvUrl, skills: JSON.stringify(skills), education: JSON.stringify(education), experience: JSON.stringify(experience)
         })
       });
       const data = await res.json();
@@ -354,11 +345,7 @@ export default function CandidateDashboardClient({ candidate, applications }) {
 
               {/* CV AI Scanner Box */}
               <div style={{ 
-                padding: '24px', 
-                marginBottom: '35px', 
-                background: 'rgba(30, 80, 255, 0.02)', 
-                border: '1px dashed var(--primary-color)',
-                borderRadius: '8px'
+                padding: '24px', marginBottom: '35px', background: 'rgba(30, 80, 255, 0.02)', border: '1px dashed var(--primary-color)', borderRadius: '8px'
               }}>
                 <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '6px', color: 'var(--text-primary)' }}>🤖 AI Resume Auto-Fill</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '12.5px', marginBottom: '16px', lineHeight: '1.5' }}>
@@ -384,10 +371,7 @@ export default function CandidateDashboardClient({ candidate, applications }) {
                 </div>
                 {parseMessage && (
                   <div style={{ 
-                    marginTop: '12px', 
-                    fontSize: '12.5px', 
-                    fontWeight: 500,
-                    color: parseMessage.startsWith('✓') ? '#10b981' : parseMessage.startsWith('✕') ? '#ef4444' : 'var(--text-secondary)'
+                    marginTop: '12px', fontSize: '12.5px', fontWeight: 500, color: parseMessage.startsWith('✓') ? '#10b981' : parseMessage.startsWith('✕') ? '#ef4444' : 'var(--text-secondary)'
                   }}>
                     {parseMessage}
                   </div>

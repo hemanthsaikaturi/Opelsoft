@@ -16,9 +16,7 @@ export default function LoginClient({ candidate, employer }) {
     setError('');
     try {
       const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usernameOrEmail: identifier, password: pwd })
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usernameOrEmail: identifier, password: pwd })
       });
       const data = await res.json();
       if (data.success) {

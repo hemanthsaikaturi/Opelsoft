@@ -4,55 +4,25 @@ import { useState } from 'react';
 
 const INTEGRATION_TABS = {
   inputs: {
-    label: '1. Ingest & Scrapers',
-    title: 'Automated Input Scraping & Ingestion',
-    description: 'Deploy crawler telemetry to index target corporate career pages (Greenhouse, Lever, Workday) and ingest resume coordinates in real-time.',
-    kpis: [
-      { value: '< 2.4s', label: 'CRAWL LATENCY' },
-      { value: '99.8%', label: 'CRAWLER UPTIME' },
-      { value: '24 active', label: 'ATS TARGETS' }
-    ],
-    summary: 'Status: 18 crawler targets active. Greenhouse and Lever endpoints synced.'
-  },
-  ai_core: {
-    label: '2. Cognitive Match Core',
-    title: 'Advanced LLM Relevance Reasoning',
-    description: 'Compare candidate resume vector coordinates against scraped job parameters using Groq-accelerated Llama 3.3. Automatically isolate skill gaps.',
-    kpis: [
-      { value: '0.85s', label: 'EVALUATION SPEED' },
-      { value: '96.4%', label: 'MATCH RELEVANCE' },
-      { value: '12-axis', label: 'VECTOR ANALYSIS' }
-    ],
-    summary: 'Status: 32 scoring match operations executed. 6 risk factors identified.'
-  },
-  actions: {
-    label: '3. Action Triggers',
-    title: 'Autonomous Integration Triggers',
-    description: 'Dispatch real-time alerts to Slack and email digests, while automatically drafting cover letters and preparing direct application vectors.',
-    kpis: [
-      { value: '< 50ms', label: 'ALERT DISPATCH' },
-      { value: '110 drafts', label: 'AUTO COVERS' },
-      { value: 'Active', label: 'INTEGRATIONS' }
-    ],
-    summary: 'Status: Slack notification dispatched. Cover draft compiled for Staff React Role.'
+    label: '1. Ingest & Scrapers', title: 'Automated Input Scraping & Ingestion', description: 'Deploy crawler telemetry to index target corporate career pages (Greenhouse, Lever, Workday) and ingest resume coordinates in real-time.', kpis: [
+      { value: '< 2.4s', label: 'CRAWL LATENCY' }, { value: '99.8%', label: 'CRAWLER UPTIME' }, { value: '24 active', label: 'ATS TARGETS' }
+    ], summary: 'Status: 18 crawler targets active. Greenhouse and Lever endpoints synced.'
+  }, ai_core: {
+    label: '2. Cognitive Match Core', title: 'Advanced LLM Relevance Reasoning', description: 'Compare candidate resume vector coordinates against scraped job parameters using Groq-accelerated Llama 3.3. Automatically isolate skill gaps.', kpis: [
+      { value: '0.85s', label: 'EVALUATION SPEED' }, { value: '96.4%', label: 'MATCH RELEVANCE' }, { value: '12-axis', label: 'VECTOR ANALYSIS' }
+    ], summary: 'Status: 32 scoring match operations executed. 6 risk factors identified.'
+  }, actions: {
+    label: '3. Action Triggers', title: 'Autonomous Integration Triggers', description: 'Dispatch real-time alerts to Slack and email digests, while automatically drafting cover letters and preparing direct application vectors.', kpis: [
+      { value: '< 50ms', label: 'ALERT DISPATCH' }, { value: '110 drafts', label: 'AUTO COVERS' }, { value: 'Active', label: 'INTEGRATIONS' }
+    ], summary: 'Status: Slack notification dispatched. Cover draft compiled for Staff React Role.'
   }
 };
 
 const NODES_DATA = [
   // Column 1: Inputs
-  { id: 'greenhouse', type: 'blue', tab: 'inputs', title: 'Greenhouse Scraper', status: 'Crawling active', icon: '📡' },
-  { id: 'lever', type: 'blue', tab: 'inputs', title: 'Lever Scraper', status: 'Crawl completed', icon: '⚡' },
-  { id: 'workday', type: 'blue', tab: 'inputs', title: 'Workday Parser', status: 'Synced', icon: '📦' },
-  
-  // Column 2: AI Core
-  { id: 'groq', type: 'emerald', tab: 'ai_core', title: 'Groq LPU Engine', status: 'Scoring match', icon: '🧠' },
-  { id: 'llama', type: 'emerald', tab: 'ai_core', title: 'Llama 3.3 70B', status: 'Scanning gaps', icon: '✨' },
-  { id: 'vector', type: 'emerald', tab: 'ai_core', title: 'Vector Embeddings', status: 'Scored 94% fit', icon: '📊' },
-  
-  // Column 3: Outputs
-  { id: 'slack', type: 'amber', tab: 'actions', title: 'Slack Dispatcher', status: 'Notification sent', icon: '💬' },
-  { id: 'email', type: 'amber', tab: 'actions', title: 'Email Drafter', status: 'Covers drafted', icon: '✉️' },
-  { id: 'webhook', type: 'purple', tab: 'actions', title: 'API Webhooks', status: 'Response 200 OK', icon: '🔌' }
+  { id: 'greenhouse', type: 'blue', tab: 'inputs', title: 'Greenhouse Scraper', status: 'Crawling active', icon: '📡' }, { id: 'lever', type: 'blue', tab: 'inputs', title: 'Lever Scraper', status: 'Crawl completed', icon: '⚡' }, { id: 'workday', type: 'blue', tab: 'inputs', title: 'Workday Parser', status: 'Synced', icon: '📦' }, // Column 2: AI Core
+  { id: 'groq', type: 'emerald', tab: 'ai_core', title: 'Groq LPU Engine', status: 'Scoring match', icon: '🧠' }, { id: 'llama', type: 'emerald', tab: 'ai_core', title: 'Llama 3.3 70B', status: 'Scanning gaps', icon: '✨' }, { id: 'vector', type: 'emerald', tab: 'ai_core', title: 'Vector Embeddings', status: 'Scored 94% fit', icon: '📊' }, // Column 3: Outputs
+  { id: 'slack', type: 'amber', tab: 'actions', title: 'Slack Dispatcher', status: 'Notification sent', icon: '💬' }, { id: 'email', type: 'amber', tab: 'actions', title: 'Email Drafter', status: 'Covers drafted', icon: '✉️' }, { id: 'webhook', type: 'purple', tab: 'actions', title: 'API Webhooks', status: 'Response 200 OK', icon: '🔌' }
 ];
 
 export default function CompoundingNetwork() {
@@ -106,17 +76,7 @@ export default function CompoundingNetwork() {
                   key={key}
                   onClick={() => setActiveTab(key)}
                   style={{
-                    padding: '12px 20px',
-                    borderRadius: '12px',
-                    border: 'none',
-                    background: activeTab === key ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                    color: activeTab === key ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-                    cursor: 'pointer',
-                    fontWeight: '700',
-                    fontSize: '0.85rem',
-                    textAlign: 'left',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
+                    padding: '12px 20px', borderRadius: '12px', border: 'none', background: activeTab === key ? 'rgba(255, 255, 255, 0.08)' : 'transparent', color: activeTab === key ? '#ffffff' : 'rgba(255, 255, 255, 0.5)', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem', textAlign: 'left', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', }}
                 >
                   {INTEGRATION_TABS[key].label}
                 </button>

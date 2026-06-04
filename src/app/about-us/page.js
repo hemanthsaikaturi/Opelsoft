@@ -3,8 +3,7 @@ import Reveal from '@/components/ui/Reveal';
 import CountUp from '@/components/ui/CountUp';
 
 export const metadata = {
-  title: 'About OpelSoft — Talent for AI, Robotics & Deep Tech',
-  description: 'OpelSoft is a specialist talent and staffing platform connecting people with leaders in artificial intelligence, robotics, and emerging technology.',
+  title: 'About OpelSoft, Talent for AI, Robotics & Deep Tech', description: 'OpelSoft is a specialist talent and staffing platform connecting people with leaders in artificial intelligence, robotics, and emerging technology.',
 };
 
 function Icon({ tint, children }) {
@@ -16,26 +15,15 @@ function Icon({ tint, children }) {
 }
 
 const DO = [
-  { tint: '#4F46E5', title: 'Specialist Job Board', body: 'Curated roles in AI, robotics, machine learning, and automation from teams building the future.', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> },
-  { tint: '#7C3AED', title: 'Talent & Staffing', body: 'Contract, direct-hire, and executive search for technical teams that need rare, vetted skills.', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> },
-  { tint: '#0EA5E9', title: 'Career Support', body: 'A profile you build once, application tracking, and guidance to help you land the right role.', icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" /> },
+  { tint: '#4F46E5', title: 'Specialist Job Board', body: 'Curated roles in AI, robotics, machine learning, and automation from teams building the future.', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> }, { tint: '#7C3AED', title: 'Talent & Staffing', body: 'Contract, direct-hire, and executive search for technical teams that need rare, vetted skills.', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> }, { tint: '#0EA5E9', title: 'Career Support', body: 'A profile you build once, application tracking, and guidance to help you land the right role.', icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" /> },
 ];
 
 const VALUES = [
-  { tint: '#4F46E5', emoji: '🛡️', title: 'Absolute Integrity', body: 'Transparent partnerships, clear communication, and honest expectations — for candidates and companies alike.' },
-  { tint: '#7C3AED', emoji: '🎯', title: 'Specialist Expertise', body: 'We focus on AI, robotics, and deep tech, so we understand the roles, the skills, and the people behind them.' },
-  { tint: '#10B981', emoji: '🌍', title: 'Global Reach', body: 'A worldwide network of talent and employers, connecting remote-ready professionals with ambitious teams.' },
+  { tint: '#4F46E5', emoji: '🛡️', title: 'Absolute Integrity', body: 'Transparent partnerships, clear communication, and honest expectations, for candidates and companies alike.' }, { tint: '#7C3AED', emoji: '🎯', title: 'Specialist Expertise', body: 'We focus on AI, robotics, and deep tech, so we understand the roles, the skills, and the people behind them.' }, { tint: '#10B981', emoji: '🌍', title: 'Global Reach', body: 'A worldwide network of talent and employers, connecting remote-ready professionals with ambitious teams.' },
 ];
 
 const FOCUS_AREAS = [
-  { name: 'Artificial Intelligence', tint: '#4F46E5', icon: <><rect x="4" y="4" width="16" height="16" rx="2" /><rect x="9" y="9" width="6" height="6" /><line x1="9" y1="1" x2="9" y2="4" /><line x1="15" y1="1" x2="15" y2="4" /><line x1="9" y1="20" x2="9" y2="23" /><line x1="15" y1="20" x2="15" y2="23" /><line x1="20" y1="9" x2="23" y2="9" /><line x1="20" y1="14" x2="23" y2="14" /><line x1="1" y1="9" x2="4" y2="9" /><line x1="1" y1="14" x2="4" y2="14" /></> },
-  { name: 'Robotics', tint: '#7C3AED', icon: <><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4" /><line x1="8" y1="16" x2="8" y2="16" /><line x1="16" y1="16" x2="16" y2="16" /></> },
-  { name: 'Machine Learning', tint: '#0EA5E9', icon: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></> },
-  { name: 'Computer Vision', tint: '#10B981', icon: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></> },
-  { name: 'Automation', tint: '#F59E0B', icon: <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" /> },
-  { name: 'Data Science', tint: '#EF4444', icon: <><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></> },
-  { name: 'Embedded Systems', tint: '#6366F1', icon: <><rect x="4" y="4" width="16" height="16" rx="2" /><rect x="9" y="9" width="6" height="6" /><line x1="9" y1="2" x2="9" y2="4" /><line x1="15" y1="2" x2="15" y2="4" /><line x1="2" y1="9" x2="4" y2="9" /><line x1="2" y1="15" x2="4" y2="15" /></> },
-  { name: 'MLOps', tint: '#14B8A6', icon: <><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></> },
+  { name: 'Artificial Intelligence', tint: '#4F46E5', icon: <><rect x="4" y="4" width="16" height="16" rx="2" /><rect x="9" y="9" width="6" height="6" /><line x1="9" y1="1" x2="9" y2="4" /><line x1="15" y1="1" x2="15" y2="4" /><line x1="9" y1="20" x2="9" y2="23" /><line x1="15" y1="20" x2="15" y2="23" /><line x1="20" y1="9" x2="23" y2="9" /><line x1="20" y1="14" x2="23" y2="14" /><line x1="1" y1="9" x2="4" y2="9" /><line x1="1" y1="14" x2="4" y2="14" /></> }, { name: 'Robotics', tint: '#7C3AED', icon: <><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4" /><line x1="8" y1="16" x2="8" y2="16" /><line x1="16" y1="16" x2="16" y2="16" /></> }, { name: 'Machine Learning', tint: '#0EA5E9', icon: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></> }, { name: 'Computer Vision', tint: '#10B981', icon: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></> }, { name: 'Automation', tint: '#F59E0B', icon: <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" /> }, { name: 'Data Science', tint: '#EF4444', icon: <><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></> }, { name: 'Embedded Systems', tint: '#6366F1', icon: <><rect x="4" y="4" width="16" height="16" rx="2" /><rect x="9" y="9" width="6" height="6" /><line x1="9" y1="2" x2="9" y2="4" /><line x1="15" y1="2" x2="15" y2="4" /><line x1="2" y1="9" x2="4" y2="9" /><line x1="2" y1="15" x2="4" y2="15" /></> }, { name: 'MLOps', tint: '#14B8A6', icon: <><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></> },
 ];
 
 export default function AboutUsPage() {
@@ -52,7 +40,7 @@ export default function AboutUsPage() {
                 Connecting <span className="op-grad-text">talent</span> with <span className="op-grad-text">opportunity</span>
               </h1>
               <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '520px', marginBottom: '28px' }}>
-                OpelSoft is a specialist talent and staffing platform. We help exceptional people find roles with the teams building advanced technology — and help those teams hire the rare skills they need.
+                OpelSoft is a specialist talent and staffing platform. We help exceptional people find roles with the teams building advanced technology, and help those teams hire the rare skills they need.
               </p>
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                 <Link href="/jobs" className="op-btn op-grad-bg" style={{ padding: '13px 28px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Explore roles</Link>
@@ -93,7 +81,7 @@ export default function AboutUsPage() {
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Our Mission</div>
             <h2 style={{ fontSize: 'clamp(1.9rem, 4vw, 2.7rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '20px' }}>Make great careers in advanced tech accessible</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.08rem', lineHeight: '1.8', marginBottom: '18px' }}>
-              The most important work of the next decade is being built by small, ambitious technical teams — yet the best people and the best opportunities rarely find each other easily.
+              The most important work of the next decade is being built by small, ambitious technical teams, yet the best people and the best opportunities rarely find each other easily.
             </p>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.08rem', lineHeight: '1.8' }}>
               OpelSoft exists to close that gap, pairing deep specialism with a clean, human hiring experience. Whether you are taking the next step in your career or scaling a technical team, we make the process seamless.

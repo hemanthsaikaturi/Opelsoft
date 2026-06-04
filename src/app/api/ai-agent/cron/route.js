@@ -16,8 +16,7 @@ export async function GET(request) {
     const expectedSecret = process.env.CRON_SECRET || 'opelsoft_cron_secret_token_123';
     if (token !== expectedSecret) {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized. Secure cron token mismatch.' },
-        { status: 401 }
+        { success: false, message: 'Unauthorized. Secure cron token mismatch.' }, { status: 401 }
       );
     }
 
@@ -47,16 +46,13 @@ export async function GET(request) {
     }
 
     return NextResponse.json({
-      success: true,
-      message: `Successfully executed background crawls for ${configs.length} candidates.`,
-      results
+      success: true, message: `Successfully executed background crawls for ${configs.length} candidates.`, results
     });
 
   } catch (error) {
     console.error('CRON scraper endpoint error:', error);
     return NextResponse.json(
-      { success: false, message: 'Server error during background scraper execution.' },
-      { status: 500 }
+      { success: false, message: 'Server error during background scraper execution.' }, { status: 500 }
     );
   } finally {
     // Release the shared headless browser once all candidates are processed.

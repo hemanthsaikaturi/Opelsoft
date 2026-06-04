@@ -21,9 +21,7 @@ export async function GET(request) {
     }
     
     const [matches] = await pool.query(`
-      SELECT m.id AS match_id, m.match_score, m.recommendation_level, m.reasoning_summary,
-             m.risk_factors, m.missing_skills, m.evaluation, m.status AS match_status, m.created_at AS matched_at,
-             dj.id AS job_id, dj.company_name, dj.job_title, dj.url, dj.ats_type, dj.job_type, dj.location, dj.salary, dj.description
+      SELECT m.id AS match_id, m.match_score, m.recommendation_level, m.reasoning_summary, m.risk_factors, m.missing_skills, m.evaluation, m.status AS match_status, m.created_at AS matched_at, dj.id AS job_id, dj.company_name, dj.job_title, dj.url, dj.ats_type, dj.job_type, dj.location, dj.salary, dj.description
       FROM new_ai_matches m
       JOIN new_ai_discovered_jobs dj ON m.discovered_job_id = dj.id
       WHERE m.user_id = ?
@@ -32,10 +30,7 @@ export async function GET(request) {
     
     // Parse JSON strings
     const parsedMatches = matches.map(m => ({
-      ...m,
-      risk_factors: typeof m.risk_factors === 'string' ? JSON.parse(m.risk_factors) : (m.risk_factors || []),
-      missing_skills: typeof m.missing_skills === 'string' ? JSON.parse(m.missing_skills) : (m.missing_skills || []),
-      evaluation: typeof m.evaluation === 'string' ? JSON.parse(m.evaluation) : (m.evaluation || null)
+      ...m, risk_factors: typeof m.risk_factors === 'string' ? JSON.parse(m.risk_factors) : (m.risk_factors || []), missing_skills: typeof m.missing_skills === 'string' ? JSON.parse(m.missing_skills) : (m.missing_skills || []), evaluation: typeof m.evaluation === 'string' ? JSON.parse(m.evaluation) : (m.evaluation || null)
     }));
     
     return NextResponse.json({ success: true, matches: parsedMatches });

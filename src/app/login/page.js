@@ -21,8 +21,7 @@ async function getDemoProfiles() {
     `);
     
     return {
-      candidate: candidates[0] || null,
-      employer: employers[0] || null
+      candidate: candidates[0] || null, employer: employers[0] || null
     };
   } catch (error) {
     console.error('Failed to load login demo profiles:', error);

@@ -5,22 +5,14 @@ import Footer from "@/components/Footer";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
 const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
+  subsets: ["latin"], variable: "--font-inter", display: "swap", });
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
+  subsets: ["latin"], variable: "--font-mono", display: "swap", });
 
 export const metadata = {
-  title: "OpelSoft — Jobs, Talent & Staffing",
-  description:
-    "OpelSoft connects candidates and employers — find jobs, build your profile, apply, and hire across every industry.",
-};
+  title: "OpelSoft, Jobs, Talent & Staffing", description:
+    "OpelSoft connects candidates and employers, find jobs, build your profile, apply, and hire across every industry.", };
 
 export default function RootLayout({ children }) {
   return (

@@ -34,27 +34,16 @@ export async function GET(request) {
       `, [userId, defaultRoles, defaultLocations]);
       
       return NextResponse.json({
-        success: true,
-        config: {
-          id: insertRes.insertId,
-          user_id: userId,
-          status: 'active',
-          preferred_roles: ['Software Engineer', 'React Developer', 'Fullstack Engineer'],
-          target_locations: ['London', 'Remote', 'United Kingdom'],
-          target_salary: '35000',
-          min_match_score: 70,
-          auto_discover: 1
+        success: true, config: {
+          id: insertRes.insertId, user_id: userId, status: 'active', preferred_roles: ['Software Engineer', 'React Developer', 'Fullstack Engineer'], target_locations: ['London', 'Remote', 'United Kingdom'], target_salary: '35000', min_match_score: 70, auto_discover: 1
         }
       });
     }
     
     const config = configs[0];
     return NextResponse.json({
-      success: true,
-      config: {
-        ...config,
-        preferred_roles: typeof config.preferred_roles === 'string' ? JSON.parse(config.preferred_roles) : (config.preferred_roles || []),
-        target_locations: typeof config.target_locations === 'string' ? JSON.parse(config.target_locations) : (config.target_locations || [])
+      success: true, config: {
+        ...config, preferred_roles: typeof config.preferred_roles === 'string' ? JSON.parse(config.preferred_roles) : (config.preferred_roles || []), target_locations: typeof config.target_locations === 'string' ? JSON.parse(config.target_locations) : (config.target_locations || [])
       }
     });
   } catch (error) {

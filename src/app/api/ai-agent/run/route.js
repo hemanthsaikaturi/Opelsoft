@@ -20,8 +20,7 @@ export async function POST(request) {
     if (!session || session.role !== 'candidate') {
       addLog('Unauthorized session. Candidate login required.', 'error');
       return NextResponse.json(
-        { success: false, logs, message: 'Unauthorized. Candidate login required.' },
-        { status: 401 }
+        { success: false, logs, message: 'Unauthorized. Candidate login required.' }, { status: 401 }
       );
     }
     

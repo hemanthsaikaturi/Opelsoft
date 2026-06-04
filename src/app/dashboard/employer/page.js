@@ -41,9 +41,7 @@ async function getEmployerDashboardData() {
 
     // Fetch applications for jobs posted by this employer
     const [applications] = await pool.query(`
-      SELECT ja.id, ja.status, ja.applied_at, ja.cv_url, ja.cover_letter,
-             j.id AS job_id, j.title AS job_title,
-             u.username, u.email
+      SELECT ja.id, ja.status, ja.applied_at, ja.cv_url, ja.cover_letter, j.id AS job_id, j.title AS job_title, u.username, u.email
       FROM new_job_applications ja
       JOIN new_jobs j ON ja.job_id = j.id
       JOIN new_users u ON ja.candidate_id = u.id
@@ -60,10 +58,7 @@ async function getEmployerDashboardData() {
     `, [userId]);
 
     return {
-      employer,
-      jobs,
-      applications,
-      transactions
+      employer, jobs, applications, transactions
     };
   } catch (error) {
     console.error('Failed to query employer dashboard data:', error);

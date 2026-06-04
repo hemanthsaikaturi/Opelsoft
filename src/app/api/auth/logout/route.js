@@ -3,16 +3,12 @@ import { NextResponse } from 'next/server';
 export async function POST() {
   try {
     const response = NextResponse.json({
-      success: true,
-      message: 'Logged out successfully!'
+      success: true, message: 'Logged out successfully!'
     });
 
     // Clear the session cookie
     response.cookies.set({
-      name: 'opelsoft_session',
-      value: '',
-      httpOnly: true,
-      expires: new Date(0), // Expire immediately
+      name: 'opelsoft_session', value: '', httpOnly: true, expires: new Date(0), // Expire immediately
       path: '/'
     });
 
@@ -20,8 +16,7 @@ export async function POST() {
   } catch (error) {
     console.error('Logout API error:', error);
     return NextResponse.json(
-      { success: false, message: 'An unexpected error occurred during logout.' },
-      { status: 500 }
+      { success: false, message: 'An unexpected error occurred during logout.' }, { status: 500 }
     );
   }
 }

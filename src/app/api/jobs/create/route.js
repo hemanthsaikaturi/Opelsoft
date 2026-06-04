@@ -7,16 +7,14 @@ export async function POST(request) {
     const session = getAuthUser(request);
     if (!session || session.role !== 'employer') {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized. Employer login required.' },
-        { status: 401 }
+        { success: false, message: 'Unauthorized. Employer login required.' }, { status: 401 }
       );
     }
     const employerId = session.userId;
 
     const data = await request.json();
     const { 
-      title, description, requirements, job_type, industry, 
-      qualification, experience, salary_package, gender, address, city, country 
+      title, description, requirements, job_type, industry, qualification, experience, salary_package, gender, address, city, country 
     } = data;
 
     if (!title) {
@@ -26,12 +24,10 @@ export async function POST(request) {
     // Insert job position assigned to the authenticated employer
     await pool.query(`
       INSERT INTO new_jobs (
-        employer_id, title, description, requirements, job_type, industry, 
-        qualification, experience, salary_package, gender, address, city, country, status, created_at
+        employer_id, title, description, requirements, job_type, industry, qualification, experience, salary_package, gender, address, city, country, status, created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', NOW())
     `, [
-      employerId, title, description || '', requirements || '', job_type || 'Full-time', industry || 'Technology',
-      qualification || '', experience || '', salary_package || '', gender || '', address || '', city || '', country || ''
+      employerId, title, description || '', requirements || '', job_type || 'Full-time', industry || 'Technology', qualification || '', experience || '', salary_package || '', gender || '', address || '', city || '', country || ''
     ]);
 
     return NextResponse.json({ success: true, message: 'Job listing posted successfully!' });

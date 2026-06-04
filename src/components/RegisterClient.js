@@ -27,9 +27,7 @@ export default function RegisterClient() {
 
     try {
       const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password, role })
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email, password, role })
       });
       const data = await res.json();
       
@@ -58,11 +56,7 @@ export default function RegisterClient() {
       onClick={() => !loading && setRole(value)}
       className="op-btn"
       style={{
-        padding: '16px', textAlign: 'center', cursor: 'pointer', borderRadius: '14px',
-        border: `1.5px solid ${role === value ? 'var(--op-indigo)' : 'var(--border-color)'}`,
-        background: role === value ? 'rgba(79,70,229,0.06)' : '#fff',
-        transition: 'border-color 0.2s, background 0.2s',
-      }}
+        padding: '16px', textAlign: 'center', cursor: 'pointer', borderRadius: '14px', border: `1.5px solid ${role === value ? 'var(--op-indigo)' : 'var(--border-color)'}`, background: role === value ? 'rgba(79,70,229,0.06)' : '#fff', transition: 'border-color 0.2s, background 0.2s', }}
     >
       <span style={{ fontSize: '24px', display: 'block', marginBottom: '8px' }}>{emoji}</span>
       <strong style={{ fontSize: '13px', display: 'block' }}>{title}</strong>

@@ -33,8 +33,7 @@ async function getCandidateDashboardData() {
 
     // Fetch applications for this user
     const [applications] = await pool.query(`
-      SELECT ja.status, ja.applied_at, j.id AS job_id, j.title, j.city, j.country, j.salary_package, j.job_type,
-             e.company_name
+      SELECT ja.status, ja.applied_at, j.id AS job_id, j.title, j.city, j.country, j.salary_package, j.job_type, e.company_name
       FROM new_job_applications ja
       JOIN new_jobs j ON ja.job_id = j.id
       LEFT JOIN new_employer_profiles e ON j.employer_id = e.user_id
@@ -43,8 +42,7 @@ async function getCandidateDashboardData() {
     `, [userId]);
 
     return {
-      candidate,
-      applications
+      candidate, applications
     };
   } catch (error) {
     console.error('Failed to query candidate dashboard data:', error);

@@ -7,8 +7,7 @@ export async function POST(request) {
     const session = getAuthUser(request);
     if (!session || session.role !== 'candidate') {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized. Candidate login required.' },
-        { status: 401 }
+        { success: false, message: 'Unauthorized. Candidate login required.' }, { status: 401 }
       );
     }
     const candidateId = session.userId;
@@ -21,8 +20,7 @@ export async function POST(request) {
 
     // Check if candidate already applied to this job
     const [existing] = await pool.query(
-      'SELECT id FROM new_job_applications WHERE job_id = ? AND candidate_id = ?',
-      [jobId, candidateId]
+      'SELECT id FROM new_job_applications WHERE job_id = ? AND candidate_id = ?', [jobId, candidateId]
     );
 
     if (existing && existing.length > 0) {
@@ -31,8 +29,7 @@ export async function POST(request) {
 
     // Insert application
     await pool.query(
-      'INSERT INTO new_job_applications (job_id, candidate_id, status, cv_url, cover_letter, applied_at) VALUES (?, ?, ?, ?, ?, NOW())',
-      [jobId, candidateId, 'in-progress', cvUrl || 'http://placeholder.com/resume.pdf', coverLetter || '']
+      'INSERT INTO new_job_applications (job_id, candidate_id, status, cv_url, cover_letter, applied_at) VALUES (?, ?, ?, ?, ?, NOW())', [jobId, candidateId, 'in-progress', cvUrl || 'http://placeholder.com/resume.pdf', coverLetter || '']
     );
 
     return NextResponse.json({ success: true, message: 'Successfully applied to this position!' });

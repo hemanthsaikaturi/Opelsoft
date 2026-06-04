@@ -25,9 +25,7 @@ export default function EmployerDashboardClient({ employer, jobs, applications, 
   const handleUpdateStatus = async (appId, newStatus) => {
     try {
       const res = await fetch('/api/applications/status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ applicationId: appId, status: newStatus })
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ applicationId: appId, status: newStatus })
       });
       const data = await res.json();
       if (data.success) {
@@ -47,18 +45,8 @@ export default function EmployerDashboardClient({ employer, jobs, applications, 
 
     try {
       const res = await fetch('/api/jobs/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: jobTitle,
-          description: jobDesc,
-          requirements: jobReq,
-          job_type: jobType,
-          industry,
-          salary_package: salary,
-          experience,
-          city,
-          country
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+          title: jobTitle, description: jobDesc, requirements: jobReq, job_type: jobType, industry, salary_package: salary, experience, city, country
         })
       });
       const data = await res.json();
@@ -74,8 +62,7 @@ export default function EmployerDashboardClient({ employer, jobs, applications, 
         
         // Refresh local listings
         const updatedJobs = [
-          { title: jobTitle, job_type: jobType, city, country, salary_package: salary, created_at: new Date() },
-          ...localJobs
+          { title: jobTitle, job_type: jobType, city, country, salary_package: salary, created_at: new Date() }, ...localJobs
         ];
         setLocalJobs(updatedJobs);
         setTimeout(() => setActiveTab('jobs'), 1500);

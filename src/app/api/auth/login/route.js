@@ -9,21 +9,18 @@ export async function POST(request) {
 
     if (!usernameOrEmail || !password) {
       return NextResponse.json(
-        { success: false, message: 'Username/email and password are required.' },
-        { status: 400 }
+        { success: false, message: 'Username/email and password are required.' }, { status: 400 }
       );
     }
 
     // Query user by username or email
     const [users] = await pool.query(
-      'SELECT * FROM new_users WHERE username = ? OR email = ?',
-      [usernameOrEmail, usernameOrEmail]
+      'SELECT * FROM new_users WHERE username = ? OR email = ?', [usernameOrEmail, usernameOrEmail]
     );
 
     if (!users || users.length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Invalid username, email, or password.' },
-        { status: 400 }
+        { success: false, message: 'Invalid username, email, or password.' }, { status: 400 }
       );
     }
 
@@ -33,8 +30,7 @@ export async function POST(request) {
     const isValid = verifyPassword(password, user.password_hash);
     if (!isValid) {
       return NextResponse.json(
-        { success: false, message: 'Invalid username, email, or password.' },
-        { status: 400 }
+        { success: false, message: 'Invalid username, email, or password.' }, { status: 400 }
       );
     }
 
@@ -43,27 +39,18 @@ export async function POST(request) {
 
     // Set cookie on response
     const response = NextResponse.json({
-      success: true,
-      message: 'Login successful!',
-      user: { id: user.id, username: user.username, email: user.email, role: user.role }
+      success: true, message: 'Login successful!', user: { id: user.id, username: user.username, email: user.email, role: user.role }
     });
 
     response.cookies.set({
-      name: 'opelsoft_session',
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 // 7 days
+      name: 'opelsoft_session', value: token, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', maxAge: 7 * 24 * 60 * 60 // 7 days
     });
 
     return response;
   } catch (error) {
     console.error('Login API error:', error);
     return NextResponse.json(
-      { success: false, message: 'An unexpected error occurred during login.' },
-      { status: 500 }
+      { success: false, message: 'An unexpected error occurred during login.' }, { status: 500 }
     );
   }
 }

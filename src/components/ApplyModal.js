@@ -17,10 +17,7 @@ export default function ApplyModal({ jobId, jobTitle }) {
     
     try {
       const res = await fetch('/api/jobs/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobId, coverLetter, cvUrl }),
-      });
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ jobId, coverLetter, cvUrl }), });
       const data = await res.json();
       
       if (data.success) {

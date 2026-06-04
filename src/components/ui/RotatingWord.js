@@ -23,12 +23,7 @@ export default function RotatingWord({ words = [], interval = 2200, className, s
     <span
       className={className}
       style={{
-        ...style,
-        display: 'inline-block',
-        transition: 'opacity 0.28s ease, transform 0.28s ease',
-        opacity: show ? 1 : 0,
-        transform: show ? 'translateY(0)' : 'translateY(8px)',
-      }}
+        ...style, display: 'inline-block', transition: 'opacity 0.28s ease, transform 0.28s ease', opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(8px)', }}
     >
       {words[i] || ''}
     </span>

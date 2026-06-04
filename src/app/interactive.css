@@ -30,6 +30,9 @@
 .op-icon { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 15px; transition: transform 0.32s var(--op-ease), background 0.32s var(--op-ease); }
 .hover-lift:hover .op-icon { transform: scale(1.1) rotate(-4deg); }
 
+/* --- Semi off-white glass panel (floating cards, search bars) --- */
+.op-glass { background: rgba(249, 249, 251, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
 /* --- Gradient text + accents --- */
 .op-grad-text { background: var(--op-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .op-grad-bg { background: var(--op-grad); }
