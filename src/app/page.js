@@ -60,6 +60,58 @@ export default async function Home() {
       {/* ── 1. HERO & PLAYGROUND ─────────────────────────── */}
       <HomeSlider stats={stats} />
 
+      {/* ── 1b. SOCIAL-PROOF METRICS BAR + QUICK SEARCH ──── */}
+      <section style={{ background: '#09090b', color: '#ffffff', borderBottom: '1px solid var(--border-color)' }}>
+        <div className="container" style={{ padding: '52px 0' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '28px', textAlign: 'center' }}>
+            {[
+              { value: `${stats.jobsCount}+`, label: 'Live roles indexed' },
+              { value: `${stats.companiesCount}+`, label: 'Hiring companies' },
+              { value: `${stats.usersCount}+`, label: 'Candidates onboard' },
+              { value: '6-axis', label: 'AI match scoring' },
+              { value: '4+ ATS', label: 'Engines crawled' },
+            ].map((m, i) => (
+              <div key={i}>
+                <div style={{ fontSize: 'clamp(1.9rem, 4vw, 2.7rem)', fontWeight: '800', letterSpacing: '-0.03em', fontFamily: 'var(--font-mono-stack)', background: 'linear-gradient(90deg,#fff,#9bb4ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  {m.value}
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '600' }}>
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: '40px', display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.18em', fontWeight: '700', marginRight: '4px' }}>
+              Popular searches
+            </span>
+            {['React Developer', 'AI/ML Engineer', 'Product Manager', 'Data Scientist', 'DevOps', 'Remote'].map((role) => (
+              <Link key={role} href={`/jobs?keyword=${encodeURIComponent(role)}`}
+                style={{ fontSize: '0.85rem', fontWeight: '600', color: '#fff', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: '30px', padding: '7px 16px', textDecoration: 'none', transition: 'all 0.2s' }}>
+                {role}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 1c. TRUSTED ATS / SOURCES BAR ────────────────── */}
+      <section style={{ background: '#ffffff', borderBottom: '1px solid var(--border-color)', padding: '34px 0' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--text-secondary)', fontWeight: '700', marginBottom: '22px' }}>
+            Auto-discovers &amp; scrapes jobs from every major ATS
+          </div>
+          <div style={{ display: 'flex', gap: '34px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+            {['Greenhouse', 'Lever', 'Ashby', 'Workday', 'Workable', 'Recruitee'].map((name) => (
+              <span key={name} style={{ fontSize: '1.35rem', fontWeight: '700', color: 'var(--text-secondary)', letterSpacing: '-0.02em', opacity: 0.75 }}>
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── 2. THE PIPELINE / STEPS ─────────────────────── */}
       <section id="features" className="section-light section-padding bg-grid-light" style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--border-color)', background: '#ffffff', padding: '120px 0' }}>
         <div className="ambient-glow ambient-emerald animate-drift-1" style={{ top: '10%', left: '5%', width: '450px', height: '450px', opacity: 0.2 }} />
@@ -228,7 +280,7 @@ export default async function Home() {
                 {/* Tech Specs Gist */}
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '24px' }}>
                   <span style={{ fontSize: '9px', fontWeight: '700', fontFamily: 'var(--font-mono-stack)', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.1)', color: '#F59E0B', padding: '3px 8px', borderRadius: '4px', textTransform: 'uppercase' }}>
-                    Claude 3.5 / Gemini
+                    Groq Llama 3.3
                   </span>
                   <span style={{ fontSize: '9px', fontWeight: '700', fontFamily: 'var(--font-mono-stack)', background: 'rgba(9, 9, 11, 0.04)', border: '1px solid rgba(9, 9, 11, 0.06)', color: 'var(--text-secondary)', padding: '3px 8px', borderRadius: '4px' }}>
                     12-point matrix
@@ -282,7 +334,7 @@ export default async function Home() {
               </div>
               <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: '800', letterSpacing: '-0.04em', color: 'var(--text-primary)', lineHeight: '1.1', marginBottom: '24px' }}>
                 Job search is fragmented.<br />
-                <span style={{ fontWeight: '400' }} className="text-light-muted">Discovery shouldn't be.</span>
+                <span style={{ fontWeight: '400' }} className="text-light-muted">Discovery shouldn&apos;t be.</span>
               </h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', lineHeight: '1.7', marginBottom: '20px', fontWeight: '400' }}>
                 Job discovery is currently broken. Opportunities are scattered across hundreds of proprietary career portals, ATS configurations, and outdated third-party job aggregators. Valuable listings vanish without notice, and candidate fit data is rarely considered.
@@ -292,7 +344,7 @@ export default async function Home() {
               </p>
               <div style={{ borderLeft: '3px solid var(--accent-color)', paddingLeft: '20px', marginTop: '24px' }}>
                 <p style={{ fontStyle: 'italic', fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: '500', lineHeight: '1.6' }} className="font-serif-italic">
-                  "Opelsoft shifts the dynamic from manual searching to continuous, automated opportunity indexing."
+                  &ldquo;Opelsoft shifts the dynamic from manual searching to continuous, automated opportunity indexing.&rdquo;
                 </p>
               </div>
             </div>

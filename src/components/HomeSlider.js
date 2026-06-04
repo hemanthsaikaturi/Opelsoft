@@ -120,8 +120,9 @@ export default function HomeSlider({ stats }) {
     e.preventDefault();
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams();
-      if (searchTitle.trim()) params.append('title', searchTitle.trim());
-      if (searchLocation.trim()) params.append('city', searchLocation.trim());
+      // The /jobs page filters on `keyword` and `location` (not title/city).
+      if (searchTitle.trim()) params.append('keyword', searchTitle.trim());
+      if (searchLocation.trim()) params.append('location', searchLocation.trim());
       window.location.href = `/jobs?${params.toString()}`;
     }
   };
