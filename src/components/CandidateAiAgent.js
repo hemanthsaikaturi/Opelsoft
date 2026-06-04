@@ -76,7 +76,7 @@ export default function CandidateAiAgent() {
       });
       const data = await res.json();
       if (data.success) {
-        showToast('AI Agent configurations updated successfully!');
+        showToast('Preferences updated successfully!');
       } else {
         showToast(data.message, 'error');
       }
@@ -131,7 +131,7 @@ export default function CandidateAiAgent() {
 
   const handleRunAgent = async () => {
     setRunning(true);
-    setLogs([{ time: new Date().toLocaleTimeString(), message: 'Waking up KAI Agent...', type: 'info' }]);
+    setLogs([{ time: new Date().toLocaleTimeString(), message: 'Finding matches...', type: 'info' }]);
     
     try {
       const res = await fetch('/api/ai-agent/run', {
@@ -144,7 +144,7 @@ export default function CandidateAiAgent() {
       }
       
       if (data.success) {
-        showToast('AI Agent pipeline execution completed!');
+        showToast('Match run completed!');
         // Refresh matches
         const matchesRes = await fetch('/api/ai-agent/matches').then(r => r.json());
         if (matchesRes.success) {
@@ -200,7 +200,7 @@ export default function CandidateAiAgent() {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '40px 0' }}>
-        <p style={{ color: 'var(--text-secondary)' }}>Loading KAI platform configs...</p>
+        <p style={{ color: 'var(--text-secondary)' }}>Loading your preferences...</p>
       </div>
     );
   }
@@ -218,18 +218,18 @@ export default function CandidateAiAgent() {
       <div className="agent-grid">
         {/* Left Side: Discovered Matches */}
         <div>
-          <h2 style={{ marginBottom: '6px' }}>AI Discovered Matches</h2>
+          <h2 style={{ marginBottom: '6px' }}>Recommended Jobs</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            Opportunities discovered and scored against your credentials by Groq (Llama 3.3)
+            Roles matched to your profile, preferred titles, and locations
           </p>
 
           {matches.length === 0 ? (
             <div className="empty-dashboard-state" style={{ padding: '60px 20px', background: 'var(--bg-secondary)', borderRadius: '8px' }}>
               <div style={{ fontSize: '40px', marginBottom: '15px' }}>🤖</div>
-              <h3>No Matches Discovered Yet</h3>
-              <p>Add target career URLs and run the KAI agent matching pipeline.</p>
+              <h3>No Matches Yet</h3>
+              <p>Set your preferences below and run a match to see recommended roles.</p>
               <button onClick={handleRunAgent} disabled={running} className="btn btn-primary" style={{ marginTop: '20px', background: 'var(--accent-gradient)', border: 'none' }}>
-                {running ? 'Running Pipeline...' : 'Run Scraper & Matcher'}
+                {running ? 'Finding...' : 'Find Matches'}
               </button>
             </div>
           ) : (
@@ -255,6 +255,32 @@ export default function CandidateAiAgent() {
                   <div className="match-reasoning">
                     <strong>AI Recommendation Heuristic:</strong> {match.reasoning_summary}
                   </div>
+
+                  {match.evaluation && (
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <span style={{
+                          fontWeight: 800, fontSize: '13px', padding: '2px 10px', borderRadius: '6px', color: '#fff',
+                          background: ['A', 'B'].includes(match.evaluation.grade) ? '#10b981' : match.evaluation.grade === 'C' ? '#f59e0b' : '#ef4444'
+                        }}>Grade {match.evaluation.grade}</span>
+                        {match.evaluation.legitimacy && match.evaluation.legitimacy.is_legit === false && (
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', border: '1px solid #ef4444', borderRadius: '6px', padding: '2px 8px' }}>
+                            ⚠ Legitimacy: {match.evaluation.legitimacy.confidence}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 14px' }}>
+                        {Object.entries(match.evaluation.dimensions || {}).map(([key, dim]) => (
+                          <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }} title={dim.note || ''}>
+                            <span style={{ color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                            <span style={{ letterSpacing: '1px', color: 'var(--accent-color)' }}>
+                              {'●'.repeat(dim.score)}{'○'.repeat(Math.max(0, 5 - dim.score))}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {match.missing_skills.length > 0 && (
                     <div style={{ marginBottom: '12px' }}>
@@ -296,7 +322,7 @@ export default function CandidateAiAgent() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Config Panel */}
           <div className="card">
-            <h3>Agent Configurations</h3>
+            <h3>Match Preferences</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '12.5px', marginBottom: '20px' }}>
               Define roles, locations, and scoring parameters
             </p>
@@ -386,9 +412,9 @@ export default function CandidateAiAgent() {
               {/* Autonomous discovery toggle */}
               <div className="agent-status-panel" style={{ padding: '12px 16px', margin: '0' }}>
                 <div className="status-indicator" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
-                  <span style={{ fontWeight: 700 }}>🔎 Auto-discover career pages</span>
+                  <span style={{ fontWeight: 700 }}>🔎 Find matching roles automatically</span>
                   <span style={{ fontSize: '11px', color: 'var(--text-light)' }}>
-                    Let the agent search the web for relevant companies and scrape their job pages automatically.
+                    Surface relevant roles based on your preferred titles and locations.
                   </span>
                 </div>
                 <label className="switch">
@@ -402,16 +428,16 @@ export default function CandidateAiAgent() {
               </div>
 
               <button type="submit" disabled={savingConfig} className="btn btn-primary" style={{ marginTop: '10px' }}>
-                {savingConfig ? 'Saving Settings...' : 'Save Agent Config'}
+                {savingConfig ? 'Saving Settings...' : 'Save Preferences'}
               </button>
             </form>
           </div>
 
           {/* Sources Panel */}
           <div className="card">
-            <h3>Crawl Targets</h3>
+            <h3>Target Companies</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '12.5px', marginBottom: '20px' }}>
-              With auto-discovery on, the agent finds these for you. You can also add specific career page URLs to always include.
+              We find matching roles for you. You can also add specific company career page URLs to always include.
             </p>
 
             <form onSubmit={handleAddSource} style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
@@ -452,14 +478,14 @@ export default function CandidateAiAgent() {
           {/* Scraper / Pipeline Execution logs */}
           <div className="card" style={{ padding: '24px 20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3>Pipeline Controller</h3>
+              <h3>Run a Match</h3>
               <button 
                 onClick={handleRunAgent} 
                 disabled={running}
                 className="btn btn-primary" 
                 style={{ padding: '8px 16px', background: 'var(--accent-gradient)', border: 'none', fontSize: '12px' }}
               >
-                {running ? 'Running...' : 'Trigger Run'}
+                {running ? 'Running...' : 'Run'}
               </button>
             </div>
             

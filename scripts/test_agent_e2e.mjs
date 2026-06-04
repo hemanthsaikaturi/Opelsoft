@@ -39,6 +39,18 @@ async function run() {
   if (!reg.data?.success) throw new Error(`register failed: ${reg.status} ${JSON.stringify(reg.data)}`);
   console.log('   ✓ registered and authenticated');
 
+  console.log('\n1b. Saving agent config (low threshold + relevant roles, auto-discover off for speed)...');
+  const cfg = await call('POST', '/api/ai-agent/config', {
+    status: 'active',
+    preferred_roles: ['Support Engineer', 'Customer Success Manager', 'Solutions Architect'],
+    target_locations: ['Remote', 'United States'],
+    target_salary: '40000',
+    min_match_score: 30,
+    auto_discover: 0,
+  });
+  if (!cfg.data?.success) throw new Error(`config save failed: ${cfg.status} ${JSON.stringify(cfg.data)}`);
+  console.log('   ✓ config saved');
+
   console.log(`\n2. Adding career source: ${sourceUrl}`);
   const src = await call('POST', '/api/ai-agent/sources', { url: sourceUrl });
   if (!src.data?.success) throw new Error(`add source failed: ${src.status} ${JSON.stringify(src.data)}`);
@@ -56,9 +68,12 @@ async function run() {
   const matches = await call('GET', '/api/ai-agent/matches');
   const list = matches.data?.matches || [];
   console.log(`   ✓ ${list.length} matches stored`);
-  list.slice(0, 8).forEach((m, i) =>
-    console.log(`     ${i + 1}. ${m.match_score}% ${m.recommendation_level} — ${m.job_title} @ ${m.company_name} (${m.location})`)
-  );
+  list.slice(0, 8).forEach((m, i) => {
+    const ev = m.evaluation || {};
+    const dims = ev.dimensions ? Object.entries(ev.dimensions).map(([k, d]) => `${k.split('_')[0]}:${d.score}`).join(' ') : '';
+    console.log(`     ${i + 1}. ${m.match_score}% grade ${ev.grade || '?'} — ${m.job_title} @ ${m.company_name}`);
+    if (dims) console.log(`        dims: ${dims} | legit: ${ev.legitimacy ? ev.legitimacy.is_legit : '?'}`);
+  });
 
   console.log('\n✓ AGENT END-TO-END TEST COMPLETED.');
 }

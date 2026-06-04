@@ -13,10 +13,10 @@ export default function Footer() {
           {/* Brand col */}
           <div className="df-brand">
             <Link href="/" className="fs-logo" style={{ marginBottom: '16px', display: 'inline-flex', alignItems: 'center' }}>
-              <img src="/logo.png" alt="Opelsoft Logo" style={{ height: '38px', width: 'auto', display: 'block', filter: 'brightness(0) invert(1)' }} />
+              <img src="/logo.svg" alt="OpelSoft Logo" style={{ height: '40px', width: 'auto', display: 'block' }} />
             </Link>
             <p className="df-tagline">
-              AI-powered recruitment automation for the modern candidate and employer.
+              Discover roles from the companies building what&apos;s next.
             </p>
             <div className="df-socials">
               {/* LinkedIn */}
@@ -48,8 +48,8 @@ export default function Footer() {
             <ul className="df-links">
               <li><Link href="/jobs">Browse Jobs</Link></li>
               <li><Link href="/dashboard/candidate">Candidate Dashboard</Link></li>
-              <li><Link href="/dashboard/candidate?tab=ai-agent">AI Recruiting Agent</Link></li>
-              <li><Link href="/dashboard/employer">Employer Portal</Link></li>
+              <li><Link href="/talent-staffing">Talent &amp; Staffing</Link></li>
+              <li><Link href="/about-us">About Us</Link></li>
             </ul>
           </div>
 
@@ -59,8 +59,8 @@ export default function Footer() {
             <ul className="df-links">
               <li><Link href="/about-us">About Us</Link></li>
               <li><Link href="/contact-us">Contact</Link></li>
-              <li><Link href="/register">Join as Candidate</Link></li>
-              <li><Link href="/register">Join as Employer</Link></li>
+              <li><Link href="/talent-staffing">Talent &amp; Staffing</Link></li>
+              <li><Link href="/register">Join OpelSoft</Link></li>
             </ul>
           </div>
 

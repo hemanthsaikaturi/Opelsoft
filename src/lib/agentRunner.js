@@ -1,6 +1,7 @@
 import pool from './db';
 import { callLLMForJson } from './llm.js';
 import { scrapeCustomCareerPage, closeScraperBrowser } from './scraper.js';
+import { discoverCareerPages } from './discovery.js';
 
 // Extractor: Parse Greenhouse token
 function parseGreenhouseToken(url) {
@@ -12,6 +13,38 @@ function parseGreenhouseToken(url) {
 function parseLeverToken(url) {
   const match = url.match(/(?:jobs\.lever\.co|lever\.co)\/([^/?#]+)/i);
   return match ? match[1] : null;
+}
+
+const SCORING_DIMENSIONS = ['role_match', 'skills_alignment', 'seniority_fit', 'compensation', 'location_feasibility', 'company_stage'];
+
+// Map a 0-100 score to a letter grade.
+function gradeFromScore(score) {
+  if (score >= 85) return 'A';
+  if (score >= 75) return 'B';
+  if (score >= 65) return 'C';
+  if (score >= 50) return 'D';
+  return 'F';
+}
+
+// Ensure a match result always carries a complete `evaluation` object
+// (dimensions + grade + legitimacy), whether it came from the LLM or the heuristic.
+function normalizeEvaluation(matchResult) {
+  const score = matchResult.match_score;
+  const dims = matchResult.dimensions && typeof matchResult.dimensions === 'object' ? matchResult.dimensions : {};
+  const dimensions = {};
+  for (const key of SCORING_DIMENSIONS) {
+    const d = dims[key] || {};
+    const raw = typeof d.score === 'number' ? d.score : Math.round(score / 20); // 0-100 -> ~1-5
+    dimensions[key] = { score: Math.max(1, Math.min(5, raw || 1)), note: d.note || '' };
+  }
+  const legitimacy = matchResult.legitimacy && typeof matchResult.legitimacy === 'object'
+    ? { is_legit: matchResult.legitimacy.is_legit !== false, confidence: matchResult.legitimacy.confidence || 'medium', flags: Array.isArray(matchResult.legitimacy.flags) ? matchResult.legitimacy.flags : [] }
+    : { is_legit: true, confidence: 'low', flags: [] };
+  return {
+    grade: matchResult.grade || gradeFromScore(score),
+    dimensions,
+    legitimacy,
+  };
 }
 
 /**
@@ -55,15 +88,34 @@ export async function executeAgentPipeline(userId, addLog) {
   const targetLocations = typeof config.target_locations === 'string' ? JSON.parse(config.target_locations) : (config.target_locations || []);
   const minMatchScore = config.min_match_score || 70;
 
-  // 3. Fetch active career sources
-  const [sources] = await pool.query("SELECT * FROM new_ai_career_sources WHERE user_id = ? AND status != 'invalid'", [userId]);
-  
+  // 3. Fetch active career sources (user-supplied)
+  const [dbSources] = await pool.query("SELECT * FROM new_ai_career_sources WHERE user_id = ? AND status != 'invalid'", [userId]);
+  const sources = [...dbSources];
+  const knownUrls = new Set(sources.map((s) => (s.url || '').replace(/\/$/, '')));
+
+  // 3b. Autonomous discovery: let the agent search the web for relevant career pages
+  if (config.auto_discover) {
+    addLog('Auto-discovery enabled. Searching the web for relevant career pages...', 'info');
+    try {
+      const discovered = await discoverCareerPages({ preferredRoles, targetLocations, addLog });
+      for (const d of discovered) {
+        const key = d.url.replace(/\/$/, '');
+        if (knownUrls.has(key)) continue;
+        knownUrls.add(key);
+        // Ephemeral source (no DB id) — crawled this run, not persisted to the user's list
+        sources.push({ id: null, url: d.url, source_type: 'discovered', ephemeral: true });
+      }
+    } catch (discErr) {
+      addLog(`Auto-discovery failed: ${discErr.message}. Continuing with manual sources.`, 'warn');
+    }
+  }
+
   if (sources.length === 0) {
-    addLog('No target career sources found. Register career page URLs in the dashboard first.', 'warn');
+    addLog('No career sources to crawl. Enable auto-discovery or add career page URLs in the dashboard.', 'warn');
     return [];
   }
 
-  addLog(`Discovered ${sources.length} active career URLs to crawl.`, 'info');
+  addLog(`Prepared ${sources.length} career URLs to crawl.`, 'info');
   
   const discoveredJobsList = [];
 
@@ -129,13 +181,18 @@ export async function executeAgentPipeline(userId, addLog) {
       }
 
       // Update source status based on whether we actually reached/extracted anything
-      const reachedStatus = jobsScraped.length > 0 ? 'active' : 'unreachable';
-      await pool.query("UPDATE new_ai_career_sources SET status = ?, last_scraped_at = NOW() WHERE id = ?", [reachedStatus, source.id]);
+      // (only for persisted user sources; discovered ones are ephemeral)
+      if (source.id) {
+        const reachedStatus = jobsScraped.length > 0 ? 'active' : 'unreachable';
+        await pool.query("UPDATE new_ai_career_sources SET status = ?, last_scraped_at = NOW() WHERE id = ?", [reachedStatus, source.id]);
+      }
 
     } catch (err) {
       addLog(`Crawling failed for ${source.url}: ${err.message}. No jobs recorded for this source.`, 'warn');
       jobsScraped = [];
-      await pool.query("UPDATE new_ai_career_sources SET status = 'unreachable', last_scraped_at = NOW() WHERE id = ?", [source.id]);
+      if (source.id) {
+        await pool.query("UPDATE new_ai_career_sources SET status = 'unreachable', last_scraped_at = NOW() WHERE id = ?", [source.id]);
+      }
     }
 
     // Deduplication and database storage
@@ -201,13 +258,25 @@ JOB DESCRIPTION:
 - Job Type: ${job.job_type}
 - Description: ${job.description}
 
+Score the match across 6 dimensions (each 1-5, where 5 is excellent), assign an overall letter grade, and assess the legitimacy of the posting (flag ghost jobs, expired listings, vague/suspicious descriptions, scams).
+
 Return ONLY valid JSON (no markdown, no explanation) with these exact fields:
 {
   "match_score": <integer 0-100>,
+  "grade": <"A"|"B"|"C"|"D"|"F">,
   "recommendation_level": <"strong"|"good"|"low">,
   "reasoning_summary": <one sentence string>,
   "risk_factors": [<array of strings>],
-  "missing_skills": [<array of strings>]
+  "missing_skills": [<array of strings>],
+  "dimensions": {
+    "role_match": { "score": <1-5>, "note": <short string> },
+    "skills_alignment": { "score": <1-5>, "note": <short string> },
+    "seniority_fit": { "score": <1-5>, "note": <short string> },
+    "compensation": { "score": <1-5>, "note": <short string> },
+    "location_feasibility": { "score": <1-5>, "note": <short string> },
+    "company_stage": { "score": <1-5>, "note": <short string> }
+  },
+  "legitimacy": { "is_legit": <true|false>, "confidence": <"high"|"medium"|"low">, "flags": [<array of strings>] }
 }`;
 
     // LLM scoring via shared helper (Groq primary -> Gemini -> Claude -> OpenAI)
@@ -215,7 +284,7 @@ Return ONLY valid JSON (no markdown, no explanation) with these exact fields:
       addLog('Scoring match with LLM (Groq primary)...', 'info');
       const scored = await callLLMForJson(scoringPrompt, {
         system: 'You are a Senior AI Recruiting Agent. Return ONLY valid JSON.',
-        maxTokens: 600,
+        maxTokens: 900,
         addLog
       });
       if (scored && typeof scored.match_score !== 'undefined') {
@@ -309,23 +378,36 @@ Return ONLY valid JSON (no markdown, no explanation) with these exact fields:
       };
     }
 
+    // Normalize into a complete evaluation (dimensions + grade + legitimacy)
+    const evaluation = normalizeEvaluation(matchResult);
+    matchResult.risk_factors = Array.isArray(matchResult.risk_factors) ? matchResult.risk_factors : [];
+    matchResult.missing_skills = Array.isArray(matchResult.missing_skills) ? matchResult.missing_skills : [];
+
+    // Surface a legitimacy problem as a risk factor so it's visible
+    if (!evaluation.legitimacy.is_legit) {
+      const flagText = evaluation.legitimacy.flags.length ? evaluation.legitimacy.flags.join('; ') : 'Posting flagged as potentially illegitimate (ghost/expired/suspicious).';
+      addLog(`⚠ Legitimacy concern for "${job.job_title}": ${flagText}`, 'warn');
+      matchResult.risk_factors = [`Legitimacy: ${flagText}`, ...matchResult.risk_factors];
+    }
+
     // Save Match Results
     if (matchResult.match_score >= minMatchScore) {
       try {
         await pool.query(`
-          INSERT INTO new_ai_matches (user_id, discovered_job_id, match_score, recommendation_level, reasoning_summary, risk_factors, missing_skills)
-          VALUES (?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO new_ai_matches (user_id, discovered_job_id, match_score, recommendation_level, reasoning_summary, risk_factors, missing_skills, evaluation)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `, [
-          userId, 
-          job.id, 
-          matchResult.match_score, 
-          matchResult.recommendation_level, 
-          matchResult.reasoning_summary, 
-          JSON.stringify(matchResult.risk_factors), 
-          JSON.stringify(matchResult.missing_skills)
+          userId,
+          job.id,
+          matchResult.match_score,
+          matchResult.recommendation_level,
+          matchResult.reasoning_summary,
+          JSON.stringify(matchResult.risk_factors),
+          JSON.stringify(matchResult.missing_skills),
+          JSON.stringify(evaluation)
         ]);
-        
-        addLog(`✓ Saved match opportunity (${matchResult.match_score}%) for "${job.job_title}"`, 'success');
+
+        addLog(`✓ Saved match (${matchResult.match_score}%, grade ${evaluation.grade}) for "${job.job_title}"`, 'success');
 
         finalMatches.push({
           job_title: job.job_title,
@@ -336,14 +418,15 @@ Return ONLY valid JSON (no markdown, no explanation) with these exact fields:
           recommendation_level: matchResult.recommendation_level,
           reasoning_summary: matchResult.reasoning_summary,
           missing_skills: matchResult.missing_skills,
-          risk_factors: matchResult.risk_factors
+          risk_factors: matchResult.risk_factors,
+          evaluation
         });
 
       } catch (matchDbErr) {
         console.error('Save match record error:', matchDbErr);
       }
     } else {
-      addLog(`Rejected low match opportunity (${matchResult.match_score}%): "${job.job_title}"`, 'info');
+      addLog(`Rejected low match opportunity (${matchResult.match_score}%, grade ${evaluation.grade}): "${job.job_title}"`, 'info');
     }
   }
 

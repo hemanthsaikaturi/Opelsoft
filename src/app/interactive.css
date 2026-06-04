@@ -1,0 +1,101 @@
+/* ===========================================================================
+   OpelSoft — interactive design system primitives (polished SaaS)
+   Lightweight CSS: scroll-reveal, hover-lift, glass, gradient mesh, motion.
+   =========================================================================== */
+:root {
+  --op-indigo: #4F46E5;
+  --op-violet: #7C3AED;
+  --op-grad: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  --op-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Scroll reveal --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--op-ease), transform 0.7s var(--op-ease);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: 0.08s; }
+.reveal.d2 { transition-delay: 0.16s; }
+.reveal.d3 { transition-delay: 0.24s; }
+.reveal.d4 { transition-delay: 0.32s; }
+
+/* --- Hover lift (cards) --- */
+.hover-lift { transition: transform 0.32s var(--op-ease), box-shadow 0.32s var(--op-ease), border-color 0.32s var(--op-ease); }
+.hover-lift:hover { transform: translateY(-6px); box-shadow: 0 24px 48px -16px rgba(17, 24, 39, 0.22); border-color: rgba(79, 70, 229, 0.25); }
+
+/* --- Interactive icon badge --- */
+.op-icon { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 15px; transition: transform 0.32s var(--op-ease), background 0.32s var(--op-ease); }
+.hover-lift:hover .op-icon { transform: scale(1.1) rotate(-4deg); }
+
+/* --- Gradient text + accents --- */
+.op-grad-text { background: var(--op-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.op-grad-bg { background: var(--op-grad); }
+
+/* --- Hero mesh background --- */
+.op-mesh {
+  background:
+    radial-gradient(38% 48% at 12% 18%, rgba(79, 70, 229, 0.16), transparent 70%),
+    radial-gradient(40% 50% at 88% 8%, rgba(124, 58, 237, 0.14), transparent 70%),
+    radial-gradient(48% 60% at 78% 96%, rgba(30, 80, 255, 0.08), transparent 72%);
+}
+
+/* --- Float animation --- */
+@keyframes opFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-13px); } }
+.op-float { animation: opFloat 6s ease-in-out infinite; }
+.op-float.slow { animation: opFloat 8.5s ease-in-out infinite; }
+
+/* --- Buttons (press/hover feedback) --- */
+.op-btn { transition: transform 0.16s var(--op-ease), box-shadow 0.26s var(--op-ease), filter 0.2s; }
+.op-btn:hover { transform: translateY(-2px); filter: brightness(1.04); }
+.op-btn:active { transform: translateY(0) scale(0.98); }
+
+/* --- Marquee ticker --- */
+@keyframes opMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.op-ticker-wrap { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.op-ticker { display: flex; gap: 14px; width: max-content; animation: opMarquee 34s linear infinite; }
+.op-ticker-wrap:hover .op-ticker { animation-play-state: paused; }
+
+/* --- Animated underline links --- */
+.op-underline { position: relative; }
+.op-underline::after { content: ''; position: absolute; left: 0; bottom: -3px; height: 2px; width: 100%; background: var(--op-grad); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--op-ease); }
+.op-underline:hover::after { transform: scaleX(1); }
+
+/* --- Animated FAQ chevron (native details) --- */
+.op-faq summary { list-style: none; }
+.op-faq summary::-webkit-details-marker { display: none; }
+.op-faq .op-faq-chevron { transition: transform 0.3s var(--op-ease); }
+.op-faq[open] .op-faq-chevron { transform: rotate(180deg); }
+
+/* --- Global uplift for legacy components (dashboards, modals, forms) --- */
+.btn-primary, .fs-btn-pill {
+  background: var(--op-grad) !important;
+  border: none !important;
+  color: #fff !important;
+  transition: transform 0.16s var(--op-ease), box-shadow 0.25s var(--op-ease), filter 0.2s !important;
+}
+.btn-primary:hover, .fs-btn-pill:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn-primary:active, .fs-btn-pill:active { transform: translateY(0) scale(0.98); }
+.form-control:focus, .select-filter:focus {
+  outline: none !important;
+  border-color: var(--op-indigo) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15) !important;
+}
+.tab-btn.active { color: var(--op-indigo) !important; }
+.status-badge.shortlisted, .status-badge.selected, .status-badge.hired { color: #fff; }
+.card { transition: box-shadow 0.3s var(--op-ease), transform 0.3s var(--op-ease); }
+
+/* --- Jobs board responsive layout --- */
+@media (max-width: 860px) {
+  .jobs-layout { grid-template-columns: 1fr !important; }
+  .jobs-layout aside { position: static !important; }
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .op-float, .op-ticker { animation: none; }
+  .hover-lift:hover { transform: none; }
+}
