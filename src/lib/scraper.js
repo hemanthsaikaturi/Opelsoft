@@ -19,15 +19,49 @@ function getBrowserHolder() {
   return global.__opelScraper;
 }
 
+const LAUNCH_ARGS = ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'];
+
 async function getBrowser() {
   const holder = getBrowserHolder();
-  if (holder.browser && holder.browser.isConnected()) {
-    return holder.browser;
+  // Reuse only a genuinely-live browser; otherwise drop the stale handle so a
+  // dead instance can't poison every subsequent source.
+  if (holder.browser) {
+    let alive = false;
+    try { alive = holder.browser.isConnected(); } catch { alive = false; }
+    if (alive) return holder.browser;
+    try { await holder.browser.close(); } catch { /* already gone */ }
+    holder.browser = null;
   }
   // Lazy require to avoid Turbopack ESM bundling issues (mirrors pdf-parse handling).
   const { chromium } = require('playwright');
-  holder.browser = await chromium.launch({ headless: true });
-  return holder.browser;
+  let lastErr;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      holder.browser = await chromium.launch({ headless: true, args: LAUNCH_ARGS });
+      return holder.browser;
+    } catch (err) {
+      lastErr = err;
+      holder.browser = null;
+      await new Promise((r) => setTimeout(r, 800)); // brief backoff before one retry
+    }
+  }
+  throw lastErr;
+}
+
+// Open a browser context, healing a dead/closed cached browser by relaunching once.
+async function openContext() {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const browser = await getBrowser();
+      return await browser.newContext({
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
+      });
+    } catch (err) {
+      await closeScraperBrowser(); // reset the cached handle
+      if (attempt === 2) throw err;
+      await new Promise((r) => setTimeout(r, 800));
+    }
+  }
 }
 
 /** Close the cached browser if one is open. Safe to call when none exists. */
@@ -162,10 +196,7 @@ export async function scrapeCustomCareerPage(url, opts = {}) {
   let context;
   let page;
   try {
-    const browser = await getBrowser();
-    context = await browser.newContext({
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-    });
+    context = await openContext();
     page = await context.newPage();
 
     log(`Rendering custom career page in headless browser: ${url}`, 'info');
