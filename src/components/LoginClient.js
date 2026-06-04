@@ -61,7 +61,7 @@ export default function LoginClient({ candidate, employer }) {
           <div style={{ position: 'absolute', top: '-20%', right: '-20%', width: '320px', height: '320px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(40px)' }} />
           <div style={{ position: 'relative' }}>
             <h2 style={{ fontSize: '1.9rem', fontWeight: '800', letterSpacing: '-0.03em', lineHeight: '1.15', marginBottom: '16px' }}>Welcome back to OpelSoft</h2>
-            <p style={{ fontSize: '1rem', opacity: 0.92, lineHeight: '1.6', marginBottom: '26px' }}>Your gateway to roles in AI, robotics, and emerging technology.</p>
+            <p style={{ fontSize: '1rem', opacity: 0.92, lineHeight: '1.6', marginBottom: '26px' }}>Your gateway to roles at the companies building what&apos;s next.</p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {['Apply to specialist roles in clicks', 'Track every application in one place', 'Build a profile that works for you'].map((t, i) => (
                 <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '0.95rem', fontWeight: '500' }}>

@@ -79,7 +79,7 @@ export default function RegisterClient() {
           <div style={{ position: 'absolute', bottom: '-20%', left: '-20%', width: '320px', height: '320px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(40px)' }} />
           <div style={{ position: 'relative' }}>
             <h2 style={{ fontSize: '1.9rem', fontWeight: '800', letterSpacing: '-0.03em', lineHeight: '1.15', marginBottom: '16px' }}>Start your journey in deep tech</h2>
-            <p style={{ fontSize: '1rem', opacity: 0.92, lineHeight: '1.6', marginBottom: '26px' }}>Join OpelSoft and connect with leaders in AI, robotics, and emerging technology.</p>
+            <p style={{ fontSize: '1rem', opacity: 0.92, lineHeight: '1.6', marginBottom: '26px' }}>Join OpelSoft and connect with the teams building what&apos;s next.</p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {['Free for candidates, always', 'One profile for every application', 'Roles from teams building the future'].map((t, i) => (
                 <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '0.95rem', fontWeight: '500' }}>

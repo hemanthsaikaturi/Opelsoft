@@ -48,7 +48,7 @@ export default async function JobsPage({ searchParams }) {
       <section className="op-mesh" style={{ borderBottom: '1px solid var(--border-color)', padding: '64px 0 52px' }}>
         <div className="container" style={{ maxWidth: '860px', textAlign: 'center' }}>
           <h1 style={{ fontSize: 'clamp(2.1rem, 5vw, 3.3rem)', fontWeight: '800', letterSpacing: '-0.04em', marginBottom: '14px' }}>
-            Find your next role in <span className="op-grad-text">AI &amp; robotics</span>
+            Find your <span className="op-grad-text">next role</span>
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '28px' }}>{jobs.length} open role{jobs.length === 1 ? '' : 's'} from teams building the future.</p>
           <form action="/jobs" method="get" className="op-glass" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', padding: '8px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)', maxWidth: '620px', margin: '0 auto' }}>

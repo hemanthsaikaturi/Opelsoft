@@ -39,7 +39,7 @@ export default function AboutUsPage() {
           <Reveal>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.22em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '18px' }}>About OpelSoft</div>
             <h1 style={{ fontSize: 'clamp(2.4rem, 5.5vw, 3.9rem)', fontWeight: '800', letterSpacing: '-0.045em', lineHeight: '1.05', marginBottom: '20px' }}>
-              Connecting talent with opportunity in <span className="op-grad-text">AI &amp; robotics</span>
+              Connecting <span className="op-grad-text">talent</span> with <span className="op-grad-text">opportunity</span>
             </h1>
             <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '640px', margin: '0 auto' }}>
               OpelSoft is a specialist talent and staffing platform. We help exceptional people find roles with the companies building artificial intelligence, robotics, and emerging technology — and help those companies hire the rare skills they need.

@@ -74,7 +74,7 @@ const FAQS = [
   { q: 'Can I track my applications?', a: 'Yes. Your candidate dashboard shows every job you have applied to along with its current hiring status.' },
 ];
 
-const TICKER = ['AI Engineer', 'Robotics Engineer', 'Machine Learning Engineer', 'Computer Vision Engineer', 'Data Scientist', 'MLOps Engineer', 'Automation Engineer', 'Research Scientist', 'NLP Engineer', 'Embedded Systems Engineer', 'Controls Engineer', 'Deep Learning Engineer'];
+const TICKER = ['AI Engineer', 'Robotics Engineer', 'Machine Learning Engineer', 'Computer Vision Engineer', 'Data Scientist', 'MLOps Engineer', 'Automation Engineer', 'Research Scientist', 'Embedded Systems Engineer', 'Software Engineer', 'Product Manager', 'UX Designer', 'DevOps Engineer', 'Project Manager'];
 
 export default async function Home() {
   const { jobs, industries, stats } = await getHomeData();
@@ -89,14 +89,14 @@ export default async function Home() {
             {/* Left */}
             <Reveal>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '30px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: '700', color: 'var(--op-indigo)', boxShadow: 'var(--shadow-sm)', marginBottom: '22px' }}>
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', display: 'inline-block' }} /> Now hiring in AI, robotics &amp; deep tech
+                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', display: 'inline-block' }} /> New roles added every day
               </div>
-              <h1 style={{ fontSize: 'clamp(2.6rem, 5.4vw, 4.2rem)', fontWeight: '800', letterSpacing: '-0.045em', lineHeight: '1.04', marginBottom: '20px' }}>
-                Build your career in{' '}
-                <RotatingWord className="op-grad-text" words={['AI', 'Robotics', 'Machine Learning', 'Data Science', 'Automation']} />
+              <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 3.9rem)', fontWeight: '800', letterSpacing: '-0.045em', lineHeight: '1.06', marginBottom: '20px' }}>
+                Find your next role as{' '}
+                <RotatingWord className="op-grad-text" words={['an AI Engineer', 'a Robotics Engineer', 'an ML Engineer', 'a Data Scientist', 'a Software Engineer', 'a Product Designer']} />
               </h1>
               <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '520px', marginBottom: '30px' }}>
-                OpelSoft connects exceptional talent with leaders in artificial intelligence, robotics, and emerging technology. Discover roles, build your profile, and apply in clicks.
+                OpelSoft connects talented people with great companies. Discover roles, build your profile, and apply in clicks — all in one place.
               </p>
 
               <form action="/jobs" method="get" className="op-glass" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', padding: '8px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)', maxWidth: '560px', marginBottom: '18px' }}>
@@ -177,7 +177,7 @@ export default async function Home() {
         <div className="container">
           <Reveal style={{ textAlign: 'center', marginBottom: '56px' }}>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Why OpelSoft</div>
-            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.9rem)', fontWeight: '800', letterSpacing: '-0.03em' }}>Built for careers in AI &amp; robotics</h2>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.9rem)', fontWeight: '800', letterSpacing: '-0.03em' }}>A simpler way to find your next role</h2>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '24px' }}>
             {VALUES.map((c, i) => (

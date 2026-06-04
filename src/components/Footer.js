@@ -16,7 +16,7 @@ export default function Footer() {
               <img src="/logo.svg" alt="OpelSoft Logo" style={{ height: '40px', width: 'auto', display: 'block' }} />
             </Link>
             <p className="df-tagline">
-              Find your next role across AI, robotics, and emerging technology.
+              Discover roles from the companies building what&apos;s next.
             </p>
             <div className="df-socials">
               {/* LinkedIn */}
