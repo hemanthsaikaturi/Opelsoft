@@ -16,7 +16,7 @@ export default function Footer() {
               <img src="/logo.svg" alt="OpelSoft Logo" style={{ height: '40px', width: 'auto', display: 'block' }} />
             </Link>
             <p className="df-tagline">
-              The job platform connecting candidates and employers — find work, post roles, and hire.
+              Find your next role across AI, robotics, and emerging technology.
             </p>
             <div className="df-socials">
               {/* LinkedIn */}
@@ -49,7 +49,7 @@ export default function Footer() {
               <li><Link href="/jobs">Browse Jobs</Link></li>
               <li><Link href="/dashboard/candidate">Candidate Dashboard</Link></li>
               <li><Link href="/talent-staffing">Talent &amp; Staffing</Link></li>
-              <li><Link href="/dashboard/employer">Employer Portal</Link></li>
+              <li><Link href="/about-us">About Us</Link></li>
             </ul>
           </div>
 
@@ -59,8 +59,8 @@ export default function Footer() {
             <ul className="df-links">
               <li><Link href="/about-us">About Us</Link></li>
               <li><Link href="/contact-us">Contact</Link></li>
-              <li><Link href="/register">Join as Candidate</Link></li>
-              <li><Link href="/register">Join as Employer</Link></li>
+              <li><Link href="/talent-staffing">Talent &amp; Staffing</Link></li>
+              <li><Link href="/register">Join OpelSoft</Link></li>
             </ul>
           </div>
 
