@@ -43,9 +43,7 @@ export async function GET(request) {
           target_locations: ['London', 'Remote', 'United Kingdom'],
           target_salary: '35000',
           min_match_score: 70,
-          slack_webhook_url: '',
-          telegram_chat_id: '',
-          discord_webhook_url: ''
+          auto_discover: 1
         }
       });
     }
@@ -75,25 +73,26 @@ export async function POST(request) {
     }
 
     const data = await request.json();
-    const { status, preferred_roles, target_locations, target_salary, min_match_score, slack_webhook_url, telegram_chat_id, discord_webhook_url } = data;
-    
+    const { status, preferred_roles, target_locations, target_salary, min_match_score, auto_discover } = data;
+
     // Check if configuration exists
     const [configs] = await pool.query("SELECT id FROM new_ai_agent_configs WHERE user_id = ?", [userId]);
-    
+
     const rolesJson = JSON.stringify(preferred_roles || []);
     const locationsJson = JSON.stringify(target_locations || []);
-    
+    const autoDiscover = auto_discover ? 1 : 0;
+
     if (configs.length === 0) {
       await pool.query(`
-        INSERT INTO new_ai_agent_configs (user_id, status, preferred_roles, target_locations, target_salary, min_match_score, slack_webhook_url, telegram_chat_id, discord_webhook_url)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [userId, status || 'inactive', rolesJson, locationsJson, target_salary || '35000', min_match_score || 70, slack_webhook_url || '', telegram_chat_id || '', discord_webhook_url || '']);
+        INSERT INTO new_ai_agent_configs (user_id, status, preferred_roles, target_locations, target_salary, min_match_score, auto_discover)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `, [userId, status || 'inactive', rolesJson, locationsJson, target_salary || '35000', min_match_score || 70, autoDiscover]);
     } else {
       await pool.query(`
-        UPDATE new_ai_agent_configs 
-        SET status = ?, preferred_roles = ?, target_locations = ?, target_salary = ?, min_match_score = ?, slack_webhook_url = ?, telegram_chat_id = ?, discord_webhook_url = ?
+        UPDATE new_ai_agent_configs
+        SET status = ?, preferred_roles = ?, target_locations = ?, target_salary = ?, min_match_score = ?, auto_discover = ?
         WHERE user_id = ?
-      `, [status || 'inactive', rolesJson, locationsJson, target_salary || '35000', min_match_score || 70, slack_webhook_url || '', telegram_chat_id || '', discord_webhook_url || '', userId]);
+      `, [status || 'inactive', rolesJson, locationsJson, target_salary || '35000', min_match_score || 70, autoDiscover, userId]);
     }
     
     return NextResponse.json({ success: true, message: 'AI Agent config updated successfully!' });

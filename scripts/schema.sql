@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `new_ai_agent_configs` (
   `target_locations` JSON NULL, -- Array of strings
   `target_salary` VARCHAR(255) NULL,
   `min_match_score` INT NOT NULL DEFAULT 70,
+  `auto_discover` TINYINT(1) NOT NULL DEFAULT 1, -- agent searches the web for career pages
   `slack_webhook_url` VARCHAR(512) NULL,
   `telegram_chat_id` VARCHAR(100) NULL,
   `discord_webhook_url` VARCHAR(512) NULL,

@@ -327,59 +327,6 @@ Return ONLY valid JSON (no markdown, no explanation) with these exact fields:
         
         addLog(`✓ Saved match opportunity (${matchResult.match_score}%) for "${job.job_title}"`, 'success');
 
-        // Outbound Slack Webhook Dispatcher
-        if (config.slack_webhook_url && matchResult.recommendation_level === 'strong') {
-          addLog(`[SLACK] Dispatching match alert to Slack...`, 'info');
-          try {
-            await fetch(config.slack_webhook_url, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                text: `🔥 *Strong Job Match Detected!* 🔥\n\n*Position:* ${job.job_title}\n*Company:* ${job.company_name}\n*Location:* ${job.location}\n*Match Score:* ${matchResult.match_score}%\n\n*Cognitive Reasoning:* ${matchResult.reasoning_summary}\n\n*Crawl Coordinates:* <${job.url}|View Job Board Listing>`
-              })
-            });
-            addLog(`✓ Slack alert successfully sent.`, 'success');
-          } catch (slackErr) {
-            addLog(`✕ Failed to dispatch Slack: ${slackErr.message}`, 'warn');
-          }
-        }
-
-        // Outbound Discord Webhook Dispatcher
-        if (config.discord_webhook_url && matchResult.recommendation_level === 'strong') {
-          addLog(`[DISCORD] Dispatching match alert to Discord...`, 'info');
-          try {
-            await fetch(config.discord_webhook_url, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                content: `🎯 **Strong Job Match Detected!** 🎯\n\n**Position:** ${job.job_title}\n**Company:** ${job.company_name}\n**Location:** ${job.location}\n**Match Score:** ${matchResult.match_score}%\n\n**Cognitive Reasoning:** ${matchResult.reasoning_summary}\n\n**Crawl Coordinates:** ${job.url}`
-              })
-            });
-            addLog(`✓ Discord alert successfully sent.`, 'success');
-          } catch (discordErr) {
-            addLog(`✕ Failed to dispatch Discord: ${discordErr.message}`, 'warn');
-          }
-        }
-
-        // Outbound Telegram Dispatcher
-        if (config.telegram_chat_id && matchResult.recommendation_level === 'strong' && process.env.TELEGRAM_BOT_TOKEN) {
-          addLog(`[TELEGRAM] Dispatching match alert to Telegram...`, 'info');
-          try {
-            const tgUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
-            await fetch(tgUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                chat_id: config.telegram_chat_id,
-                text: `🎯 Strong Job Match Detected!\n\nPosition: ${job.job_title}\nCompany: ${job.company_name}\nLocation: ${job.location}\nMatch Score: ${matchResult.match_score}%\n\nReasoning: ${matchResult.reasoning_summary}\n\nLink: ${job.url}`
-              })
-            });
-            addLog(`✓ Telegram alert successfully sent.`, 'success');
-          } catch (tgErr) {
-            addLog(`✕ Failed to dispatch Telegram: ${tgErr.message}`, 'warn');
-          }
-        }
-
         finalMatches.push({
           job_title: job.job_title,
           company_name: job.company_name,

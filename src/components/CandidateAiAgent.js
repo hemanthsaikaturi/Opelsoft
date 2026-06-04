@@ -9,9 +9,7 @@ export default function CandidateAiAgent() {
     target_locations: [],
     target_salary: '35000',
     min_match_score: 70,
-    slack_webhook_url: '',
-    telegram_chat_id: '',
-    discord_webhook_url: ''
+    auto_discover: 1
   });
   
   const [sources, setSources] = useState([]);
@@ -222,7 +220,7 @@ export default function CandidateAiAgent() {
         <div>
           <h2 style={{ marginBottom: '6px' }}>AI Discovered Matches</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            Opportunities discovered and scored against your credentials by Claude 3.5 Sonnet
+            Opportunities discovered and scored against your credentials by Groq (Llama 3.3)
           </p>
 
           {matches.length === 0 ? (
@@ -385,27 +383,22 @@ export default function CandidateAiAgent() {
                 </div>
               </div>
 
-              {/* Webhook integration configurations */}
-              <div className="form-group">
-                <label className="form-label">Slack Webhook URL</label>
-                <input 
-                  type="url" 
-                  placeholder="https://hooks.slack.com/services/..." 
-                  className="form-control"
-                  value={config.slack_webhook_url || ''}
-                  onChange={(e) => setConfig({ ...config, slack_webhook_url: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Telegram Chat ID</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. 183940284" 
-                  className="form-control"
-                  value={config.telegram_chat_id || ''}
-                  onChange={(e) => setConfig({ ...config, telegram_chat_id: e.target.value })}
-                />
+              {/* Autonomous discovery toggle */}
+              <div className="agent-status-panel" style={{ padding: '12px 16px', margin: '0' }}>
+                <div className="status-indicator" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
+                  <span style={{ fontWeight: 700 }}>🔎 Auto-discover career pages</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-light)' }}>
+                    Let the agent search the web for relevant companies and scrape their job pages automatically.
+                  </span>
+                </div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={!!config.auto_discover}
+                    onChange={(e) => setConfig({ ...config, auto_discover: e.target.checked ? 1 : 0 })}
+                  />
+                  <span className="slider-switch"></span>
+                </label>
               </div>
 
               <button type="submit" disabled={savingConfig} className="btn btn-primary" style={{ marginTop: '10px' }}>
@@ -418,7 +411,7 @@ export default function CandidateAiAgent() {
           <div className="card">
             <h3>Crawl Targets</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '12.5px', marginBottom: '20px' }}>
-              Target career page URLs to scan for matching positions
+              With auto-discovery on, the agent finds these for you. You can also add specific career page URLs to always include.
             </p>
 
             <form onSubmit={handleAddSource} style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>

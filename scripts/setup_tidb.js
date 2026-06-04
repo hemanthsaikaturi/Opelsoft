@@ -45,6 +45,20 @@ async function run() {
     console.log('Applying schema.sql (CREATE TABLE IF NOT EXISTS)...');
     await conn.query(schemaSql);
 
+    // Idempotent migrations for databases created before these columns existed.
+    // TiDB supports ADD COLUMN IF NOT EXISTS.
+    const migrations = [
+      "ALTER TABLE new_ai_agent_configs ADD COLUMN IF NOT EXISTS auto_discover TINYINT(1) NOT NULL DEFAULT 1",
+      "ALTER TABLE new_ai_matches ADD COLUMN IF NOT EXISTS evaluation JSON NULL",
+    ];
+    for (const sql of migrations) {
+      try {
+        await conn.query(sql);
+      } catch (e) {
+        console.warn(`  (migration skipped: ${e.message})`);
+      }
+    }
+
     const [tables] = await conn.query(
       "SELECT table_name AS t FROM information_schema.tables WHERE table_schema = ? AND table_name LIKE 'new_%' ORDER BY table_name",
       [dbConfig.database]
