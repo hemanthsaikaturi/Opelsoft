@@ -107,7 +107,7 @@ export default async function Home() {
 
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Popular:</span>
-                {['AI Engineer', 'Robotics Engineer', 'ML Engineer', 'Data Scientist'].map((r) => (
+                {['AI Engineer', 'Robotics Engineer', 'ML Engineer', 'Data Scientist', 'Software Engineer'].map((r) => (
                   <Link key={r} href={`/jobs?keyword=${encodeURIComponent(r)}`} className="op-btn" style={{ fontSize: '0.83rem', fontWeight: '600', color: 'var(--text-primary)', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '30px', padding: '6px 14px', textDecoration: 'none' }}>{r}</Link>
                 ))}
               </div>
