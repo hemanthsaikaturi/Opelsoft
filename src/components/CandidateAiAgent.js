@@ -256,6 +256,32 @@ export default function CandidateAiAgent() {
                     <strong>AI Recommendation Heuristic:</strong> {match.reasoning_summary}
                   </div>
 
+                  {match.evaluation && (
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <span style={{
+                          fontWeight: 800, fontSize: '13px', padding: '2px 10px', borderRadius: '6px', color: '#fff',
+                          background: ['A', 'B'].includes(match.evaluation.grade) ? '#10b981' : match.evaluation.grade === 'C' ? '#f59e0b' : '#ef4444'
+                        }}>Grade {match.evaluation.grade}</span>
+                        {match.evaluation.legitimacy && match.evaluation.legitimacy.is_legit === false && (
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', border: '1px solid #ef4444', borderRadius: '6px', padding: '2px 8px' }}>
+                            ⚠ Legitimacy: {match.evaluation.legitimacy.confidence}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 14px' }}>
+                        {Object.entries(match.evaluation.dimensions || {}).map(([key, dim]) => (
+                          <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }} title={dim.note || ''}>
+                            <span style={{ color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                            <span style={{ letterSpacing: '1px', color: 'var(--accent-color)' }}>
+                              {'●'.repeat(dim.score)}{'○'.repeat(Math.max(0, 5 - dim.score))}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {match.missing_skills.length > 0 && (
                     <div style={{ marginBottom: '12px' }}>
                       <strong style={{ fontSize: '12.5px', color: 'var(--text-primary)' }}>Missing Skills / Technologies:</strong>
