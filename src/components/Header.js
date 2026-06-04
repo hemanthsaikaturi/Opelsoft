@@ -4,27 +4,44 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const NAV_ITEMS = [
-  { name: 'Home', path: '/' },
-  { name: 'Find Jobs', path: '/jobs' },
-  {
-    name: 'For Candidates',
-    dropdown: [
-      { name: 'My Dashboard', path: '/dashboard/candidate' },
-      { name: 'AI Recruiting Agent', path: '/dashboard/candidate?tab=ai-agent' },
-      { name: 'Browse Jobs', path: '/jobs' },
-    ],
-  },
-  {
-    name: 'For Employers',
-    dropdown: [
-      { name: 'Employer Dashboard', path: '/dashboard/employer' },
-      { name: 'Post a Job', path: '/dashboard/employer?tab=post-job' },
-    ],
-  },
-  { name: 'About Us', path: '/about-us' },
-  { name: 'Contact', path: '/contact-us' },
-];
+const TALENT_NAV = {
+  name: 'Talent & Staffing',
+  dropdown: [
+    { name: 'Overview', path: '/talent-staffing' },
+    { name: 'Staffing Solutions', path: '/talent-staffing#solutions' },
+    { name: 'How We Work', path: '/talent-staffing#models' },
+  ],
+};
+
+const CANDIDATE_NAV = {
+  name: 'For Candidates',
+  dropdown: [
+    { name: 'My Dashboard', path: '/dashboard/candidate' },
+    { name: 'AI Recruiting Agent', path: '/dashboard/candidate?tab=ai-agent' },
+    { name: 'Browse Jobs', path: '/jobs' },
+  ],
+};
+
+// Shown only when an employer is signed in.
+const EMPLOYER_NAV = {
+  name: 'For Employers',
+  dropdown: [
+    { name: 'Employer Dashboard', path: '/dashboard/employer' },
+    { name: 'Post a Job', path: '/dashboard/employer?tab=post-job' },
+  ],
+};
+
+function buildNav(user) {
+  return [
+    { name: 'Home', path: '/' },
+    { name: 'Find Jobs', path: '/jobs' },
+    TALENT_NAV,
+    CANDIDATE_NAV,
+    ...(user && user.role === 'employer' ? [EMPLOYER_NAV] : []),
+    { name: 'About Us', path: '/about-us' },
+    { name: 'Contact', path: '/contact-us' },
+  ];
+}
 
 function DropdownMenu({ items, onMouseEnter, onMouseLeave }) {
   return (
@@ -99,6 +116,8 @@ export default function Header() {
     setOpenDropdown(null);
   }, [pathname]);
 
+  const navItems = buildNav(user);
+
   return (
     <>
       <header className="fs-header" ref={headerRef}>
@@ -110,7 +129,7 @@ export default function Header() {
 
           {/* Desktop Nav — centered */}
           <nav className="fs-nav-desktop">
-            {NAV_ITEMS.map((item) => {
+            {navItems.map((item) => {
               const hasDropdown = !!item.dropdown;
               const isActive = item.path ? pathname === item.path : item.dropdown?.some(d => pathname === d.path);
               const isOpen = openDropdown === item.name;
@@ -200,7 +219,7 @@ export default function Header() {
       {/* Mobile Drawer */}
       <div className={`fs-mobile-drawer${mobileOpen ? ' open' : ''}`}>
         <div className="fs-mobile-nav">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <div key={item.name}>
               {item.dropdown ? (
                 <>
