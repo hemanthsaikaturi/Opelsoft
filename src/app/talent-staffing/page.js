@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 import CountUp from '@/components/ui/CountUp';
 import GeoDecor from '@/components/ui/GeoDecor';
-import StatsBand from '@/components/ui/StatsBand';
 
 export const metadata = {
   title: 'Talent, Staffing & Executive Search, OpelSoft', description: 'OpelSoft connects organizations with vetted talent across technology, engineering, healthcare, and professional services, through contract, direct-hire, and executive search.',
@@ -73,13 +72,19 @@ export default function TalentStaffingPage() {
         </div>
       </section>
 
-      {/* STATS — slate card band */}
-      <StatsBand tone="slate" items={[
-        { v: 6, s: '', label: 'Specialisms', icon: <><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5M2 12l10 5 10-5" /></> },
-        { v: 4, s: '', label: 'Engagement models', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> },
-        { v: 20, s: '+', label: 'Industries served', icon: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></> },
-        { v: 24, s: '/7', label: 'Sourcing coverage', icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></> },
-      ]} />
+      {/* STATS BAR */}
+      <section style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
+        <div className="container" style={{ padding: '52px 0' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', textAlign: 'center' }}>
+            {[{ v: 6, s: '', l: 'Specialisms' }, { v: 4, s: '', l: 'Engagement models' }, { v: 20, s: '+', l: 'Industries served' }, { v: 24, s: '/7', l: 'Sourcing coverage' }].map((m, i) => (
+              <Reveal key={i} delay={(i % 4) + 1}>
+                <div style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: '800', letterSpacing: '-0.03em' }}><CountUp value={m.v} suffix={m.s} /></div>
+                <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '600' }}>{m.l}</div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* WHY OPELSOFT */}
       <section className="section-light section-padding" style={{ background: '#fff', borderBottom: '1px solid var(--border-color)' }}>
