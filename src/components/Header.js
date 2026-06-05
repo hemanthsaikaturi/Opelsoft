@@ -5,250 +5,136 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const TALENT_NAV = { name: 'Talent & Staffing', path: '/talent-staffing' };
-
 const CANDIDATE_NAV = { name: 'For Candidates', path: '/dashboard/candidate' };
-
-// Shown only when an employer is signed in.
 const EMPLOYER_NAV = {
-  name: 'For Employers', dropdown: [
-    { name: 'Employer Dashboard', path: '/dashboard/employer' }, { name: 'Post a Job', path: '/dashboard/employer?tab=post-job' }, ],
+  name: 'For Employers',
+  dropdown: [
+    { name: 'Employer Dashboard', path: '/dashboard/employer' },
+    { name: 'Post a Job', path: '/dashboard/employer?tab=post-job' },
+  ],
 };
 
 function buildNav(user) {
   return [
-    { name: 'Home', path: '/' }, { name: 'About Us', path: '/about-us' }, TALENT_NAV, CANDIDATE_NAV, { name: 'Find Jobs', path: '/jobs' }, ...(user && user.role === 'employer' ? [EMPLOYER_NAV] : []), { name: 'Contact', path: '/contact-us' }, ];
-}
-
-function DropdownMenu({ items, onMouseEnter, onMouseLeave }) {
-  return (
-    <div className="fs-dropdown" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      {items.map((item) => (
-        <Link key={item.path} href={item.path} className="fs-dropdown-item">
-          {item.name}
-        </Link>
-      ))}
-    </div>
-  );
+    { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about-us' },
+    TALENT_NAV,
+    CANDIDATE_NAV,
+    { name: 'Find Jobs', path: '/jobs' },
+    ...(user && user.role === 'employer' ? [EMPLOYER_NAV] : []),
+    { name: 'Contact', path: '/contact-us' },
+  ];
 }
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
   const [user, setUser] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(null);     // open desktop dropdown name
+  const [mobile, setMobile] = useState(false); // mobile drawer open
   const pathname = usePathname();
-  const headerRef = useRef(null);
-  const closeTimer = useRef(null);
+  const ref = useRef(null);
+  const timer = useRef(null);
 
-  const openMenu = useCallback((name) => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    setOpenDropdown(name);
-  }, []);
-
-  const scheduleClose = useCallback(() => {
-    closeTimer.current = setTimeout(() => setOpenDropdown(null), 120);
-  }, []);
-
-  // Check login session on load and route changes
+  // Session
   useEffect(() => {
     fetch('/api/auth/me')
-      .then(r => r.json())
-      .then(data => {
-        if (data.success) {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      })
+      .then((r) => r.json())
+      .then((d) => setUser(d.success ? d.user : null))
       .catch(() => setUser(null));
   }, [pathname]);
 
-  const handleSignOut = async () => {
-    try {
-      const res = await fetch('/api/auth/logout', { method: 'POST' });
-      const data = await res.json();
-      if (data.success) {
-        setUser(null);
-        window.location.href = '/login';
-      }
-    } catch (err) {
-      console.error('Sign out error:', err);
-    }
-  };
-
-  // Frosted-glass + shadow once the page is scrolled
+  // Frosted shadow on scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close menus on route change
+  useEffect(() => { setMobile(false); setOpen(null); }, [pathname]);
+
   // Close dropdown on outside click
   useEffect(() => {
-    function handleClick(e) {
-      if (headerRef.current && !headerRef.current.contains(e.target)) {
-        setOpenDropdown(null);
-      }
-    }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(null); };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-    setOpenDropdown(null);
-  }, [pathname]);
+  const openMenu = useCallback((name) => { if (timer.current) clearTimeout(timer.current); setOpen(name); }, []);
+  const closeMenu = useCallback(() => { timer.current = setTimeout(() => setOpen(null), 140); }, []);
 
-  const navItems = buildNav(user);
+  const signOut = async () => {
+    try {
+      const r = await fetch('/api/auth/logout', { method: 'POST' });
+      const d = await r.json();
+      if (d.success) { setUser(null); window.location.href = '/login'; }
+    } catch (e) { console.error('Sign out error:', e); }
+  };
+
+  const nav = buildNav(user);
+  const isActive = (item) => (item.path ? pathname === item.path : item.dropdown?.some((d) => pathname === d.path));
+
+  const actions = (
+    user ? (
+      <>
+        <Link href={user.role === 'candidate' ? '/dashboard/candidate' : '/dashboard/employer'} className="nv-user">👤 {user.username}</Link>
+        <button onClick={signOut} className="nv-cta">Sign Out</button>
+      </>
+    ) : (
+      <>
+        <Link href="/login" className="nv-ghost">Login</Link>
+        <Link href="/register" className="nv-cta">Join Us</Link>
+      </>
+    )
+  );
 
   return (
     <>
-      <header className={`fs-header${scrolled ? ' scrolled' : ''}`} ref={headerRef}>
-        <div className="fs-header-inner">
-          {/* Logo */}
-          <Link href="/" className="fs-logo" style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.svg" alt="OpelSoft Logo" style={{ height: '32px', width: 'auto', display: 'block' }} />
+      <header className={`nv${scrolled ? ' scrolled' : ''}`} ref={ref}>
+        <div className="nv-inner">
+          <Link href="/" className="nv-logo" aria-label="OpelSoft home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="OpelSoft" />
           </Link>
 
-          {/* Desktop Nav, centered */}
-          <nav className="fs-nav-desktop">
-            {navItems.map((item) => {
-              const hasDropdown = !!item.dropdown;
-              const isActive = item.path ? pathname === item.path : item.dropdown?.some(d => pathname === d.path);
-              const isOpen = openDropdown === item.name;
-
-              return (
-                <div
-                  key={item.name}
-                  className={`fs-nav-item${hasDropdown ? ' has-dropdown' : ''}`}
-                  onMouseEnter={() => hasDropdown && openMenu(item.name)}
-                  onMouseLeave={() => hasDropdown && scheduleClose()}
-                >
-                  {hasDropdown ? (
-                    <button
-                      className={`fs-nav-link op-underline${isActive ? ' active' : ''}`}
-                      onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                      aria-expanded={isOpen}
-                    >
-                      {item.name}
-                      <svg
-                        className={`fs-chevron${isOpen ? ' rotated' : ''}`}
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                      >
-                        <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  ) : (
-                    <Link href={item.path} className={`fs-nav-link op-underline${isActive ? ' active' : ''}`}>
-                      {item.name}
-                    </Link>
-                  )}
-
-                  {hasDropdown && isOpen && (
-                    <DropdownMenu
-                      items={item.dropdown}
-                      onMouseEnter={() => openMenu(item.name)}
-                      onMouseLeave={scheduleClose}
-                    />
-                  )}
-                </div>
-              );
-            })}
+          <nav className="nv-links">
+            {nav.map((item) => item.dropdown ? (
+              <div key={item.name} className={`nv-item${open === item.name ? ' open' : ''}`} onMouseEnter={() => openMenu(item.name)} onMouseLeave={closeMenu}>
+                <button className={`nv-link${isActive(item) ? ' active' : ''}`} aria-expanded={open === item.name} onClick={() => setOpen(open === item.name ? null : item.name)}>
+                  {item.name}
+                  <svg className="nv-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </button>
+                {open === item.name && (
+                  <div className="nv-dropdown" onMouseEnter={() => openMenu(item.name)} onMouseLeave={closeMenu}>
+                    {item.dropdown.map((s) => <Link key={s.path} href={s.path}>{s.name}</Link>)}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link key={item.name} href={item.path} className={`nv-link${isActive(item) ? ' active' : ''}`}>{item.name}</Link>
+            ))}
           </nav>
 
-          {/* Desktop CTA */}
-          <div className="fs-header-cta">
-            {user ? (
-              <>
-                <Link 
-                  href={user.role === 'candidate' ? '/dashboard/candidate' : '/dashboard/employer'} 
-                  className="fs-btn-ghost"
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', textTransform: 'none' }}
-                >
-                  👤 {user.username}
-                </Link>
-                <button 
-                  onClick={handleSignOut} 
-                  className="fs-btn-pill" 
-                  style={{ cursor: 'pointer', border: 'none' }}
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="fs-btn-ghost">Login</Link>
-                <Link href="/register" className="fs-btn-pill">Join Us</Link>
-              </>
-            )}
-          </div>
+          <div className="nv-actions">{actions}</div>
 
-          {/* Mobile Hamburger */}
-          <button
-            className="fs-hamburger"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle navigation"
-          >
-            <span className={`fs-ham-line${mobileOpen ? ' open' : ''}`} />
-            <span className={`fs-ham-line${mobileOpen ? ' open' : ''}`} />
-            <span className={`fs-ham-line${mobileOpen ? ' open' : ''}`} />
+          <button className={`nv-burger${mobile ? ' open' : ''}`} aria-label="Toggle menu" aria-expanded={mobile} onClick={() => setMobile(!mobile)}>
+            <span /><span /><span />
           </button>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
-      <div className={`fs-mobile-drawer${mobileOpen ? ' open' : ''}`}>
-        <div className="fs-mobile-nav">
-          {navItems.map((item) => (
-            <div key={item.name}>
-              {item.dropdown ? (
-                <>
-                  <span className="fs-mobile-section">{item.name}</span>
-                  {item.dropdown.map((sub) => (
-                    <Link key={sub.path} href={sub.path} className="fs-mobile-link sub">
-                      {sub.name}
-                    </Link>
-                  ))}
-                </>
-              ) : (
-                <Link href={item.path} className={`fs-mobile-link${pathname === item.path ? ' active' : ''}`}>
-                  {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
-          
-          {user ? (
-            <div className="fs-mobile-cta" style={{ gap: '10px' }}>
-              <Link 
-                href={user.role === 'candidate' ? '/dashboard/candidate' : '/dashboard/employer'} 
-                className="fs-mobile-link"
-                style={{ textAlign: 'center', fontWeight: '700', padding: '10px 0' }}
-              >
-                Dashboard ({user.username})
-              </Link>
-              <button 
-                onClick={handleSignOut} 
-                className="fs-btn-pill full" 
-                style={{ width: '100%', cursor: 'pointer', border: 'none' }}
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <div className="fs-mobile-cta">
-              <Link href="/login" className="fs-btn-ghost full">Login</Link>
-              <Link href="/register" className="fs-btn-pill full">Join Us</Link>
-            </div>
-          )}
-        </div>
+      <div className={`nv-scrim${mobile ? ' open' : ''}`} onClick={() => setMobile(false)} />
+      <div className={`nv-drawer${mobile ? ' open' : ''}`}>
+        {nav.map((item) => item.dropdown ? (
+          <div key={item.name}>
+            <div className="nv-msection">{item.name}</div>
+            {item.dropdown.map((s) => <Link key={s.path} href={s.path} className="sub">{s.name}</Link>)}
+          </div>
+        ) : (
+          <Link key={item.name} href={item.path} className={isActive(item) ? 'active' : ''}>{item.name}</Link>
+        ))}
+        <div className="nv-drawer-actions">{actions}</div>
       </div>
-
-      {mobileOpen && <div className="fs-overlay" onClick={() => setMobileOpen(false)} />}
     </>
   );
 }
