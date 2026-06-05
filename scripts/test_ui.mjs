@@ -37,7 +37,7 @@ async function run() {
       await cp.locator('#register-email').fill(`${candName}@t.com`);
       await cp.locator('#register-username').fill(candName);
       await cp.locator('#register-password').fill('Pass123!');
-      await cp.getByRole('button', { name: 'Register' }).click();
+      await cp.getByRole('button', { name: 'Create Account' }).click();
       await cp.waitForURL('**/dashboard/candidate', { timeout: 12000 });
     });
 
@@ -59,8 +59,8 @@ async function run() {
     });
 
     await check('Candidate opens AI Recruiting Agent and adds a crawl source', async () => {
-      await cp.getByRole('button', { name: /AI Recruiting Agent/ }).click();
-      await cp.getByText('Agent Configurations').waitFor({ timeout: 12000 });
+      await cp.getByRole('button', { name: 'Job Matches' }).click();
+      await cp.getByText('Match Preferences').waitFor({ timeout: 12000 });
       const url = `boards.greenhouse.io/uitest${rnd()}`;
       await cp.getByPlaceholder('e.g. boards.greenhouse.io/openai').fill(url);
       await cp.getByRole('button', { name: '+ Add' }).click();
@@ -68,8 +68,8 @@ async function run() {
     });
 
     await check('Candidate toggles auto-discovery and saves config', async () => {
-      await cp.getByRole('button', { name: 'Save Agent Config' }).click();
-      await cp.getByText('AI Agent configurations updated successfully!').waitFor({ timeout: 10000 });
+      await cp.getByRole('button', { name: 'Save Preferences' }).click();
+      await cp.getByText('Preferences updated successfully!').waitFor({ timeout: 10000 });
     });
 
     await cCtx.close();
@@ -81,11 +81,11 @@ async function run() {
 
     await check('Employer registers via UI and lands on dashboard', async () => {
       await ep.goto(`${BASE}/register`, { waitUntil: 'domcontentloaded' });
-      await ep.getByText('Post Jobs & Recruit').click(); // select Employer role card
+      await ep.getByText('Post jobs & recruit').click(); // select Employer role card
       await ep.locator('#register-email').fill(`${empName}@t.com`);
       await ep.locator('#register-username').fill(empName);
       await ep.locator('#register-password').fill('Pass123!');
-      await ep.getByRole('button', { name: 'Register' }).click();
+      await ep.getByRole('button', { name: 'Create Account' }).click();
       await ep.waitForURL('**/dashboard/employer', { timeout: 12000 });
     });
 
@@ -113,7 +113,7 @@ async function run() {
       await lp.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded' });
       await lp.locator('#username').fill(candName);
       await lp.locator('#password').fill('Pass123!');
-      await lp.getByRole('button', { name: 'Log In' }).click();
+      await lp.getByRole('button', { name: 'Sign In' }).click();
       await lp.waitForURL('**/dashboard/candidate', { timeout: 25000 });
     });
     await lCtx.close();
