@@ -4,7 +4,13 @@
       "Bash(sed -n '34p' src/app/globals.css)",
       "Bash(sed -n '228,236p' src/app/globals.css)",
       "Bash(git merge *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "Bash([ -f \"$f\" ])",
+      "Bash(git reset *)",
+      "Bash(node -e ' *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\badam\\.claude\\projects\\c--Projects-Opelsoft\\memory"
     ]
   }
 }
