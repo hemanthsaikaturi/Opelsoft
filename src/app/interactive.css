@@ -127,52 +127,65 @@
   .hover-lift:hover { transform: none; }
 }
 
-/* === Fill empty space: tinted + patterned + geometric light sections === */
-.section-light,
-.section-padding {
-  position: relative;
-  /* tinted gradient + soft colour blobs so sections never read as flat white */
-  background:
-    radial-gradient(circle at 14% 18%, rgba(79, 70, 229, 0.10), transparent 36%),
-    radial-gradient(circle at 88% 80%, rgba(124, 58, 237, 0.09), transparent 38%),
-    linear-gradient(180deg, #f6f5fd 0%, #eef0fb 100%) !important;
-}
-.section-light > .container,
-.section-padding > .container,
-.section-light .container,
-.section-padding .container { position: relative; z-index: 1; }
+/* ===========================================================================
+   Per-section background system — each section gets ONE intentional, restrained
+   treatment (clean+glow / soft tint / fine grid / neutral band / dark grid).
+   Compose: <section class="section-padding sec-glow"> etc.
+   =========================================================================== */
+.sec-tint, .sec-soft, .sec-grid, .sec-glow, .sec-dark-grid { position: relative; }
+.sec-tint > .container, .sec-soft > .container, .sec-grid > .container,
+.sec-glow > .container, .sec-dark-grid > .container { position: relative; z-index: 1; }
 
-/* Visible dot grid */
-.section-light::before,
-.section-padding::before {
+/* Soft tinted band */
+.sec-tint { background: linear-gradient(180deg, #f5f6fd 0%, #edeffb 100%) !important; }
+
+/* Neutral cool band */
+.sec-soft { background: #f6f8fc !important; }
+
+/* Fine architectural grid, faded toward the edges (modern, premium) */
+.sec-grid { overflow: hidden; }
+.sec-grid::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(79, 70, 229, 0.14) 1.5px, transparent 1.6px);
-  background-size: 22px 22px;
-  pointer-events: none;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(79, 70, 229, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(79, 70, 229, 0.07) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 42%, #000 32%, transparent 78%);
+          mask-image: radial-gradient(ellipse 75% 65% at 50% 42%, #000 32%, transparent 78%);
 }
 
-/* Geometric accent shape (outlined rounded square) */
-.section-light::after,
-.section-padding::after {
+/* Single soft colour glow accent */
+.sec-glow { overflow: hidden; }
+.sec-glow::before {
   content: '';
   position: absolute;
-  right: -60px; top: 36px;
-  width: 220px; height: 220px;
-  border: 2px solid rgba(124, 58, 237, 0.16);
-  border-radius: 36px;
-  transform: rotate(18deg);
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
+  width: 560px; height: 560px; border-radius: 50%;
+  top: -210px; right: -150px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.13), transparent 62%);
 }
-/* Alternate the shape to a ring on every other section for variety */
-.section-light:nth-of-type(even)::after,
-.section-padding:nth-of-type(even)::after {
-  border-radius: 50%;
-  right: auto; left: -70px; top: auto; bottom: 30px;
-  border-color: rgba(79, 70, 229, 0.16);
-  transform: none;
+.sec-glow.alt::before {
+  top: auto; right: auto; bottom: -210px; left: -170px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.12), transparent 62%);
+}
+
+/* Subtle grid for dark sections */
+.sec-dark-grid { overflow: hidden; }
+.sec-dark-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 85% at 50% 50%, #000, transparent 82%);
+          mask-image: radial-gradient(ellipse 72% 85% at 50% 50%, #000, transparent 82%);
 }

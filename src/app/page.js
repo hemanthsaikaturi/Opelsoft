@@ -144,7 +144,7 @@ export default async function Home() {
       {/* end first-screen wrapper */}
 
       {/* ── STATS BAR ────────────────────────────────────── */}
-      <section style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
+      <section className="sec-dark-grid" style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container" style={{ padding: '52px 0' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', textAlign: 'center' }}>
             {[
@@ -161,7 +161,7 @@ export default async function Home() {
       </section>
 
       {/* ── WHY OPELSOFT ─────────────────────────────────── */}
-      <section className="section-light section-padding" style={{ background: '#fff', borderBottom: '1px solid var(--border-color)' }}>
+      <section className="section-padding sec-glow" style={{ background: '#fff', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container">
           <Reveal style={{ textAlign: 'center', marginBottom: '56px' }}>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Why OpelSoft</div>
@@ -182,7 +182,7 @@ export default async function Home() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────── */}
-      <section className="section-light section-padding">
+      <section className="section-padding sec-tint">
         <div className="container">
           <Reveal style={{ textAlign: 'center', marginBottom: '56px' }}>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>How It Works</div>
@@ -207,7 +207,7 @@ export default async function Home() {
       </section>
 
       {/* ── WHAT WE OFFER ────────────────────────────────── */}
-      <section className="section-light section-padding" style={{ background: '#fff', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+      <section className="section-padding sec-grid" style={{ background: '#fff', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container">
           <Reveal style={{ textAlign: 'center', marginBottom: '56px' }}>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>What We Offer</div>
@@ -231,7 +231,7 @@ export default async function Home() {
       </section>
 
       {/* ── FEATURED JOBS ────────────────────────────────── */}
-      <section className="section-light section-padding">
+      <section className="section-padding sec-soft">
         <div className="container">
           <Reveal style={{ textAlign: 'center', marginBottom: '56px' }}>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Latest Openings</div>
@@ -272,7 +272,7 @@ export default async function Home() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────── */}
-      <section className="section-light section-padding" style={{ background: '#fff', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+      <section className="section-padding sec-glow alt" style={{ background: '#fff', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container" style={{ maxWidth: '760px' }}>
           <Reveal style={{ textAlign: 'center', marginBottom: '48px' }}>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Questions</div>
