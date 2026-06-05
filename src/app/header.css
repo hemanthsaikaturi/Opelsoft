@@ -1,0 +1,188 @@
+/* ===========================================================================
+   OpelSoft navigation — clean, responsive, self-contained (nv-* namespace)
+   =========================================================================== */
+.nv {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--header-height);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+  transition: box-shadow 0.3s var(--op-ease), background 0.3s var(--op-ease);
+}
+.nv.scrolled {
+  background: rgba(255, 255, 255, 0.93);
+  box-shadow: 0 6px 24px -14px rgba(15, 23, 42, 0.28);
+}
+
+.nv-inner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nv-logo { display: flex; align-items: center; flex-shrink: 0; }
+.nv-logo img { height: 34px; width: auto; display: block; }
+
+/* Desktop links — centered */
+.nv-links { display: flex; align-items: center; gap: 2px; margin: 0 auto; }
+
+.nv-item { position: relative; }
+
+.nv-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 15px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #475569;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s var(--op-ease), background 0.2s var(--op-ease);
+}
+.nv-link:hover { color: #0f172a; background: rgba(79, 70, 229, 0.06); }
+.nv-link.active { color: #4f46e5; }
+.nv-link.active::after {
+  content: '';
+  position: absolute;
+  left: 15px; right: 15px; bottom: 5px;
+  height: 2px; border-radius: 2px;
+  background: var(--op-grad);
+}
+.nv-link:focus-visible { outline: 2px solid #4f46e5; outline-offset: 2px; }
+
+.nv-chevron { transition: transform 0.2s var(--op-ease); opacity: 0.6; }
+.nv-item.open .nv-chevron { transform: rotate(180deg); }
+
+/* Dropdown */
+.nv-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 210px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px -14px rgba(15, 23, 42, 0.24);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: nvFade 0.18s var(--op-ease);
+}
+@keyframes nvFade { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.nv-dropdown a {
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.nv-dropdown a:hover { background: rgba(79, 70, 229, 0.08); color: #4f46e5; }
+
+/* Right-side actions */
+.nv-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.nv-user {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; color: #0f172a;
+  border: 1px solid var(--border-color); background: #fff; text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.nv-user:hover { border-color: #4f46e5; color: #4f46e5; }
+.nv-ghost {
+  padding: 9px 16px; border-radius: 10px; font-weight: 600; font-size: 14.5px;
+  color: #0f172a; text-decoration: none; border: 1px solid var(--border-color);
+  background: #fff; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+}
+.nv-ghost:hover { border-color: #4f46e5; color: #4f46e5; }
+.nv-cta {
+  padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 14.5px;
+  color: #fff; text-decoration: none; background: var(--op-grad); border: none; cursor: pointer;
+  box-shadow: 0 8px 18px -8px rgba(79, 70, 229, 0.55);
+  transition: transform 0.15s var(--op-ease), filter 0.2s, box-shadow 0.2s;
+}
+.nv-cta:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.nv-cta:active { transform: translateY(0) scale(0.98); }
+
+/* Hamburger */
+.nv-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.nv-burger span { display: block; width: 20px; height: 2px; margin: 0 auto; background: #0f172a; border-radius: 2px; transition: transform 0.25s var(--op-ease), opacity 0.2s; }
+.nv-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nv-burger.open span:nth-child(2) { opacity: 0; }
+.nv-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nv-drawer {
+  position: fixed;
+  top: var(--header-height);
+  left: 0; right: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 20px 40px -16px rgba(15, 23, 42, 0.25);
+  padding: 16px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transform: translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.26s var(--op-ease), opacity 0.26s var(--op-ease);
+  z-index: 999;
+  max-height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+}
+.nv-drawer.open { transform: none; opacity: 1; pointer-events: auto; }
+.nv-drawer a, .nv-drawer .nv-msection {
+  padding: 13px 12px; border-radius: 10px; font-size: 16px; font-weight: 600;
+  color: #0f172a; text-decoration: none;
+}
+.nv-drawer a:active, .nv-drawer a:hover { background: rgba(79, 70, 229, 0.06); }
+.nv-drawer a.active { color: #4f46e5; }
+.nv-msection { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; font-weight: 700; padding-bottom: 4px; }
+.nv-drawer a.sub { padding-left: 24px; font-size: 15px; font-weight: 500; color: #475569; }
+.nv-drawer-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+.nv-drawer-actions .nv-cta, .nv-drawer-actions .nv-ghost, .nv-drawer-actions .nv-user { text-align: center; justify-content: center; padding: 13px; }
+
+.nv-scrim {
+  position: fixed; inset: var(--header-height) 0 0 0; background: rgba(15, 23, 42, 0.35);
+  opacity: 0; pointer-events: none; transition: opacity 0.26s; z-index: 998;
+}
+.nv-scrim.open { opacity: 1; pointer-events: auto; }
+
+@media (max-width: 960px) {
+  .nv-links, .nv-actions { display: none; }
+  .nv-burger { display: flex; }
+}
+@media (min-width: 961px) {
+  .nv-drawer, .nv-scrim { display: none; }
+}
