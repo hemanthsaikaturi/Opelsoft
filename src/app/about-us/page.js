@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
-import CountUp from '@/components/ui/CountUp';
 import GeoDecor from '@/components/ui/GeoDecor';
+import Decor from '@/components/ui/Decor';
+import StatsBand from '@/components/ui/StatsBand';
 
 export const metadata = {
   title: 'About OpelSoft — Software Development & IT Consulting', description: 'OpelSoft provides Software Development & IT Consulting Services to Fortune 500 clients across the US, with staffing and consulting across Banking, Healthcare, Telecom, Insurance, Retail and more.',
@@ -63,18 +64,12 @@ export default function AboutUsPage() {
       </section>
 
       {/* STATS */}
-      <section style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
-        <div className="container" style={{ padding: '52px 0' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', textAlign: 'center' }}>
-            {[{ v: 15, s: '+', l: 'Years of experience' }, { v: 20, s: '+', l: 'Industries served' }, { v: 500, s: '+', l: 'Projects delivered' }, { v: 100, s: '%', l: 'Client commitment' }].map((m, i) => (
-              <Reveal key={i} delay={(i % 4) + 1}>
-                <div style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: '800', letterSpacing: '-0.03em' }}><CountUp value={m.v} suffix={m.s} /></div>
-                <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '600' }}>{m.l}</div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <StatsBand tone="dark" decor={<Decor variant="c" tone="dark" />} items={[
+        { v: 15, s: '+', label: 'Years of experience', icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></> },
+        { v: 20, s: '+', label: 'Industries served', icon: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></> },
+        { v: 500, s: '+', label: 'Projects delivered', icon: <><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></> },
+        { v: 100, s: '%', label: 'Client commitment', icon: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /> },
+      ]} />
 
       {/* MISSION */}
       <section className="section-light section-padding" style={{ background: '#fff', borderBottom: '1px solid var(--border-color)' }}>
