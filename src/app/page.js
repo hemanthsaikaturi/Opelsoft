@@ -82,7 +82,7 @@ export default async function Home() {
               <h1 style={{ fontSize: 'clamp(2.5rem, 5.2vw, 4.1rem)', fontWeight: '800', letterSpacing: '-0.045em', lineHeight: '1.08', marginBottom: '22px' }}>
                 Find your next role as
                 {/* Reserve 2 lines so the hero height never shifts as the word rotates */}
-                <span style={{ display: 'block', minHeight: '2.16em' }}>
+                <span style={{ display: 'block', minHeight: '2.16em', marginTop: '10px' }}>
                   <RotatingWord className="op-grad-text" words={['an AI Engineer', 'a Robotics Engineer', 'an ML Engineer', 'a Data Scientist', 'a Software Engineer', 'a Product Designer']} />
                 </span>
               </h1>
