@@ -74,10 +74,10 @@
 
 /* --- Frosted-glass header --- */
 .fs-header {
-  background: rgba(255, 255, 255, 0.72) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: saturate(180%) blur(16px);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
-  border-bottom: 1px solid rgba(9, 9, 11, 0.06) !important;
+  border-bottom: 1px solid rgba(9, 9, 11, 0.08) !important;
 }
 .fs-header.scrolled {
   background: rgba(255, 255, 255, 0.86) !important;
