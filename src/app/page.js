@@ -6,6 +6,7 @@ import RotatingWord from '@/components/ui/RotatingWord';
 import SaveButton from '@/components/ui/SaveButton';
 import GeoDecor from '@/components/ui/GeoDecor';
 import Decor from '@/components/ui/Decor';
+import StatsBand from '@/components/ui/StatsBand';
 
 // Cache the homepage and revalidate periodically instead of querying the
 // remote DB on every navigation (much faster nav; counts refresh every 30s).
@@ -145,22 +146,12 @@ export default async function Home() {
       {/* end first-screen wrapper */}
 
       {/* ── STATS BAR ────────────────────────────────────── */}
-      <section className="sec-dark-grid" style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
-        <Decor variant="c" tone="dark" />
-        <div className="container" style={{ padding: '52px 0' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', textAlign: 'center' }}>
-            {[
-              { v: stats.jobsCount, s: '+', label: 'Open roles' }, { v: stats.companiesCount, s: '+', label: 'Hiring companies' }, { v: stats.usersCount, s: '+', label: 'Candidates' }, { v: industries.length || 6, s: '+', label: 'Industries' }, ].map((m, i) => (
-              <Reveal key={i} delay={(i % 4) + 1}>
-                <div style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: '800', letterSpacing: '-0.03em' }}>
-                  <CountUp value={m.v} suffix={m.s} />
-                </div>
-                <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '600' }}>{m.label}</div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <StatsBand tone="dark" decor={<Decor variant="c" tone="dark" />} items={[
+        { v: stats.jobsCount, s: '+', label: 'Open roles', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> },
+        { v: stats.companiesCount, s: '+', label: 'Hiring companies', icon: <><path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /></> },
+        { v: stats.usersCount, s: '+', label: 'Candidates', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> },
+        { v: industries.length || 6, s: '+', label: 'Industries', icon: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></> },
+      ]} />
 
       {/* ── WHY OPELSOFT ─────────────────────────────────── */}
       <section className="section-padding sec-glow" style={{ background: '#fff', borderBottom: '1px solid var(--border-color)' }}>
