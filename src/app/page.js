@@ -7,6 +7,7 @@ import SaveButton from '@/components/ui/SaveButton';
 import GeoDecor from '@/components/ui/GeoDecor';
 import Decor from '@/components/ui/Decor';
 import StatsBand from '@/components/ui/StatsBand';
+import FAQAccordion from '@/components/ui/FAQAccordion';
 
 // Cache the homepage and revalidate periodically instead of querying the
 // remote DB on every navigation (much faster nav; counts refresh every 30s).
@@ -96,11 +97,8 @@ export default async function Home() {
 
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <Link href="/jobs" className="op-btn op-grad-bg" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '15px 32px', borderRadius: '14px', fontWeight: '700', fontSize: '1.02rem', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>
-                  Explore open roles
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                </Link>
-                <Link href="/jobs" className="op-btn" style={{ padding: '15px 32px', borderRadius: '14px', fontWeight: '700', fontSize: '1.02rem', border: '1px solid var(--border-color)', background: '#fff', color: '#09090b', textDecoration: 'none' }}>
                   Submit your details
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
                 </Link>
               </div>
             </Reveal>
@@ -276,19 +274,7 @@ export default async function Home() {
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Questions</div>
             <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.7rem)', fontWeight: '800', letterSpacing: '-0.03em' }}>Frequently asked</h2>
           </Reveal>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {FAQS.map((f, i) => (
-              <Reveal key={i}>
-                <details className="op-faq card-light" style={{ padding: '20px 24px' }}>
-                  <summary style={{ cursor: 'pointer', fontWeight: '700', fontSize: '1.05rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
-                    {f.q}
-                    <svg className="op-faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--op-indigo)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><polyline points="6 9 12 15 18 9" /></svg>
-                  </summary>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.96rem', lineHeight: '1.6', marginTop: '12px' }}>{f.a}</p>
-                </details>
-              </Reveal>
-            ))}
-          </div>
+          <FAQAccordion faqs={FAQS} />
         </div>
       </section>
 
@@ -298,11 +284,10 @@ export default async function Home() {
           <Reveal>
             <div className="op-grad-bg" style={{ borderRadius: '28px', padding: 'clamp(40px, 6vw, 72px) 32px', textAlign: 'center', color: '#fff', position: 'relative', overflow: 'hidden', boxShadow: '0 30px 60px -20px rgba(79,70,229,0.5)' }}>
               <div style={{ position: 'absolute', top: '-30%', right: '-10%', width: '380px', height: '380px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(40px)' }} />
-              <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: '800', letterSpacing: '-0.04em', marginBottom: '14px', position: 'relative' }}>Ready to take the next step?</h2>
-              <p style={{ fontSize: '1.2rem', opacity: 0.92, maxWidth: '540px', margin: '0 auto 36px', lineHeight: '1.6', position: 'relative' }}>Join OpelSoft today and find your next role.</p>
+              <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: '800', letterSpacing: '-0.04em', marginBottom: '14px', position: 'relative' }}>Let's build something great</h2>
+              <p style={{ fontSize: '1.2rem', opacity: 0.92, maxWidth: '540px', margin: '0 auto 36px', lineHeight: '1.6', position: 'relative' }}>Partner with OpelSoft to scale your team and deliver exceptional solutions.</p>
               <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap', position: 'relative' }}>
-                <Link href="/jobs" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: '#fff', color: 'var(--op-indigo)', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Get Started Free</Link>
-                <Link href="/jobs" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: 'rgba(255,255,255,0.14)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', textDecoration: 'none' }}>Browse Jobs</Link>
+                <Link href="/contact-us" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: '#fff', color: 'var(--op-indigo)', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Get in touch</Link>
               </div>
             </div>
           </Reveal>

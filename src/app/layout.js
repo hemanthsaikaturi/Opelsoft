@@ -3,6 +3,8 @@ import "./interactive.css";
 import "./header.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Preloader from "@/components/ui/Preloader";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 
 const inter = Inter({
@@ -23,11 +25,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
+        <Preloader />
         <Header />
         <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           {children}
         </main>
         <Footer />
+        <ScrollToTop />
       </body>
     </html>
   );
