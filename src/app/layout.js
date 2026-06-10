@@ -29,19 +29,28 @@ export const metadata = {
     template: '%s | OpelSoft',
     default: 'OpelSoft | IT Consulting & Talent Solutions',
   },
-  description: 'OpelSoft provides Software Development, IT Consulting Services, Contract Staffing, Direct Placements, and Bench Sales to Fortune 500 clients across the US.',
+  description: 'OpelSoft provides Software Development, IT Consulting, and Talent Solutions for Fortune 500 clients nationwide.',
   keywords: ['IT Consulting', 'Software Development', 'Contract Staffing', 'Bench Sales', 'Application Development', 'OpelSoft LLC', 'New Jersey'],
   openGraph: {
     type: 'website',
     url: '/',
     siteName: 'OpelSoft',
     title: 'OpelSoft | IT Consulting & Talent Solutions',
-    description: 'Drive Efficiency with AI-Powered Workforce Solutions. We provide Software Development & IT Consulting Services to Fortune 500 clients.',
+    description: 'Drive Efficiency with AI-Powered Workforce Solutions. IT Consulting & Development for Fortune 500s.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'OpelSoft - IT Consulting & Talent Solutions',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'OpelSoft | IT Consulting & Talent Solutions',
-    description: 'Drive Efficiency with AI-Powered Workforce Solutions.',
+    description: 'Drive Efficiency with AI-Powered Workforce Solutions. IT Consulting & Development for Fortune 500s.',
+    images: ['/og-image.png'],
   },
 };
 
