@@ -2,15 +2,8 @@
 
 import { useState } from 'react';
 
-const WORK_AUTH = [
-  'OPT (Optional Practical Training)',
-  'CPT (Curricular Practical Training)',
-  'H-1B',
-  'Needs H-1B Sponsorship',
-  'Green Card (Permanent Resident)',
-  'U.S. Citizen',
-];
-const EMPTY = { name: '', contact: '', email: '', workAuth: '' };
+
+const EMPTY = { name: '', contact: '', email: '' };
 
 export default function JobIntakeForm() {
   const [form, setForm] = useState(EMPTY);
@@ -82,13 +75,7 @@ export default function JobIntakeForm() {
               <div className="exp-scale"><span>1+</span><span>10+</span><span>20+</span></div>
             </div>
           </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="intake-auth">Work Authorization</label>
-            <select id="intake-auth" className="form-control op-focus" required value={form.workAuth} onChange={set('workAuth')}>
-              <option value="" disabled>Select your work authorization</option>
-              {WORK_AUTH.map((o) => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
+
 
           {status === 'error' && (
             <div className="status-alert alert-error" style={{ borderRadius: '12px' }}>{msg}</div>
